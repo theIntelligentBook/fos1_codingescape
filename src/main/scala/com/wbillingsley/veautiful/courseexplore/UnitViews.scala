@@ -7,11 +7,19 @@ import units.CBOK
 
 object UnitViews {
 
-  def longLink(u:TeachingUnit):VNode = <.a(
-    ^.href := "#",
-    ^.onClick --> Routing.routeTo(Routing.UnitRoute(u.code))
-  )(
-    s"${u.code} ${u.name.getOrElse("Unnamed")}"
+  def longLink(u:TeachingUnit):VNode = <.span(
+    <.a(
+      ^.href := "#",
+      ^.onClick --> Routing.routeTo(Routing.UnitRoute(u.code))
+    )(
+      s"${u.code} ${u.name.getOrElse("Unnamed")}"
+    ),
+    " ",
+    <.a(
+      ^.href := s"https://my.une.edu.au/courses/2018/units/${u.code}",
+      ^.target := "_blank",
+      ^.style := "float: right;",
+      <("small")(s" ${u.code} on CAUC"))
   )
 
   def shortLink(u:TeachingUnit):VNode = <.a(

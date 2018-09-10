@@ -1,6 +1,6 @@
 package units
 
-import info.tweaked.model.plan.Prerequisite.minCP
+import info.tweaked.model.plan.Prerequisite.MinCP
 import info.tweaked.model.unit._
 import units.CBOK._
 
@@ -30,7 +30,7 @@ object COSC540 extends HasUnit {
         "design secure and efficient distributed systems using a range of network technologies protocols for a range of purposes. "
     ),
 
-    prerequisite = minCP(72), //COSC220 and
+    prerequisite = MinCP(72), //COSC220 and
 
     taught = Seq(
       AssessmentDescription(

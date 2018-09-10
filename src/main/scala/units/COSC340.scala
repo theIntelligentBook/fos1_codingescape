@@ -1,6 +1,6 @@
 package units
 
-import info.tweaked.model.plan.Prerequisite.minCP
+import info.tweaked.model.plan.Prerequisite.MinCP
 import info.tweaked.model.unit._
 import units.CBOK._
 
@@ -28,7 +28,7 @@ object COSC340 extends HasUnit {
       "analyse and interpret the underlying algorithms in cryptographic techniques used for secure communication and develop distributed applications that allow for the secure transfer of information; and \ndescribe and analyse the various administrative, social and legal aspects of specific communication technologies, security threats, wireless/mobile computing platforms and the related privacy concerns. "
     ),
 
-    prerequisite = minCP(72), //COSC220 and
+    prerequisite = MinCP(72), //COSC220 and
 
     taught = Seq(
       AssessmentDescription(

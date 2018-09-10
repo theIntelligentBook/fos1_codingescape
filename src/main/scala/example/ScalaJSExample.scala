@@ -1,7 +1,8 @@
 package example
 
-import com.wbillingsley.veautiful.courseexplore.{Home, Routing, UnitViews}
+import com.wbillingsley.veautiful.courseexplore.{CourseLoader, Home, Routing, UnitViews}
 import com.wbillingsley.veautiful.{<, Attacher, DElement}
+import info.tweaked.model.hjson.RequirementParsing
 
 import scala.scalajs.js
 import org.scalajs.dom
@@ -26,19 +27,40 @@ trait ElementExt extends js.Object {
       f: js.Function1[name.EventType, _]): Unit
 }
 
-object ScalaJSExample extends js.JSApp {
-  def oldmain(): Unit = {
-    val paragraph = dom.document.createElement("p")
-    paragraph.innerHTML = "<strong>It works!</strong>"
-    dom.document.getElementById("playground").appendChild(paragraph)
-
-    val p = paragraph.asInstanceOf[ElementExt]
-  }
+object ScalaJSExample {
 
   var root = Attacher.render(<.div(), dom.document.getElementById("render-here"))
 
-  def main():Unit = {
+  def main(args:Array[String]):Unit = {
     import com.wbillingsley.veautiful._
+
+    println("START NOW")
+
+    /*
+    for {
+      loaded <- CourseLoader.termsMap
+    } println(loaded)
+
+    for {
+      loaded <- CourseLoader.offeringsMap
+    } println(loaded)
+
+    for {
+      loaded <- CourseLoader.loadUnit("COSC220")
+    } println(loaded)
+
+
+    */
+
+
+    for {
+      loaded <- CourseLoader.loadCourse("DipIT")
+    } println(loaded)
+
+
+    println(RequirementParsing.parseRequirement("30cp to 48cp from COSC110, COSC101, COSC120"))
+
+    println(RequirementParsing.parseRequirement("COSC110, COSC101, COSC120"))
 
     root.render(Routing)
 

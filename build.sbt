@@ -1,5 +1,5 @@
 // Turn this project into a Scala.js project by importing these settings
-enablePlugins(ScalaJSPlugin)
+enablePlugins(ScalaJSPlugin, ScalaJSBundlerPlugin)
 
 name := "Example"
 
@@ -12,6 +12,14 @@ scalaJSUseMainModuleInitializer := true
 testFrameworks += new TestFramework("utest.runner.Framework")
 
 libraryDependencies ++= Seq(
-    "org.scala-js" %%% "scalajs-dom" % "0.9.2",
-    "com.lihaoyi" %%% "utest" % "0.4.5" % "test"
+  "com.wbillingsley" %%% "handy" % "0.9.0-SNAPSHOT",
+  "org.scala-lang.modules" %%% "scala-parser-combinators" % "1.1.1",
+  "com.lihaoyi" %%% "upickle" % "0.6.6",
+  "org.scala-js" %%% "scalajs-dom" % "0.9.2",
+  "com.lihaoyi" %%% "utest" % "0.4.5" % "test"
 )
+
+npmDependencies in Compile += "hjson" -> "3.1.1"
+
+webpackBundlingMode := BundlingMode.LibraryOnly()
+emitSourceMaps := false

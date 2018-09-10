@@ -1,6 +1,9 @@
 package com.wbillingsley.veautiful.courseexplore
 
+import com.wbillingsley.handy.{Ref, RefFailed}
 import com.wbillingsley.veautiful._
+
+import scala.concurrent.Future
 
 object Headers {
 
@@ -58,6 +61,26 @@ object Headers {
         ), t
       )
     )
+  }
+
+  case class R(f:Ref[VNode]) extends VNode {
+
+    val node = <.div("Loading...")
+
+    def domNode = node.domNode
+
+    def attach() = node.attach()
+
+    {
+      f.foreach(n => node.makeItSo(<.div(n)))
+      f.recoverWith { case x:Throwable =>
+          node.makeItSo(<.p(x.getMessage))
+          RefFailed(x)
+      }
+    }
+
+
+    override def detach(): Unit = node.detach()
   }
 
   case class Expander(closed: () => VNode, open: () => VNode) extends VNode {

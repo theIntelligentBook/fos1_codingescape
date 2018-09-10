@@ -53,7 +53,7 @@ object Prerequisite {
   }
 
   /** A condition that the units so far contains a minimum number of credit points */
-  case class minCP(cps:Int) extends Prerequisite {
+  case class MinCP(cps:Int) extends Prerequisite {
     def apply(units:Seq[TeachingUnit]) = units.foldLeft(0)(_ + _.cp) >= cps
 
     def stringify = s"$cps credit points"
@@ -78,6 +78,20 @@ object Prerequisite {
     override def units = required
 
     def stringify = s"$num from ${required.map(_.code).mkString("(", ", ", ")")}"
+  }
+
+  case class RangeFrom(minCp:Int, maxCp:Int, required:TeachingUnit*) extends Prerequisite {
+    def apply(units:Seq[TeachingUnit]):Boolean = {
+      val cp = required.intersect(units).map(_.cp).sum
+
+      (cp >= minCp) && (cp <= maxCp)
+    }
+
+    override def contains(u:TeachingUnit) = required.contains(u)
+
+    override def units = required
+
+    def stringify = s"${minCp}cp to ${maxCp}cp from ${required.map(_.code).mkString("(", ", ", ")")}"
   }
 
   case class NumSatisfying(num:Int, check: (TeachingUnit) => Boolean, condStr:String = "satisfying a condition") extends Prerequisite {

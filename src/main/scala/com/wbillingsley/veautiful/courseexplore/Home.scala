@@ -28,6 +28,22 @@ object Home {
   def msg:VNode = <.div(^.cls := "row",
     <.div(^.cls := "col-md-8 col-md-offset-2 inset-space",
       <.div(^.cls := "inset-tab",
+        <.h1("Planned courses"),
+        <.ul(
+          <.li(
+            <.a(
+              ^.href := "#",
+              ^.onClick --> Routing.routeTo(Routing.CourseRoute("DipIT"))
+            )("Diploma in Information Technology")
+          ),
+          <.li(
+            <.a(
+              ^.href := "#",
+              ^.onClick --> Routing.routeTo(Routing.CourseRoute("BInfTech"))
+            )("Bachelor of Information Technology")
+          )
+        ),
+
         <.h1("Course explorer"),
         <.p(
           """

@@ -1,6 +1,6 @@
 package units
 
-import info.tweaked.model.plan.Prerequisite.minCP
+import info.tweaked.model.plan.Prerequisite.MinCP
 import info.tweaked.model.unit._
 import units.CBOK._
 
@@ -29,7 +29,7 @@ object COSC530 extends HasUnit {
       "evaluate parallel processing algorithms for speed, efficiency and select appropriate approaches for different situations and requirements. "
     ),
 
-    prerequisite = minCP(72), //COSC220 and
+    prerequisite = MinCP(72), //COSC220 and
 
     taught = Seq(
       AssessmentDescription(

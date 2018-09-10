@@ -1,6 +1,6 @@
 package units
 
-import info.tweaked.model.plan.Prerequisite.minCP
+import info.tweaked.model.plan.Prerequisite.MinCP
 import info.tweaked.model.unit._
 import units.CBOK._
 
@@ -28,7 +28,7 @@ object COSC350 extends HasUnit {
         "design and implement solutions in a high-level programming language"
     ),
 
-    prerequisite = minCP(72), //COSC220 and
+    prerequisite = MinCP(72), //COSC220 and
 
     taught = Seq(
       AssessmentDescription(

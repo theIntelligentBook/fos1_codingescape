@@ -1,6 +1,6 @@
 package units
 
-import info.tweaked.model.plan.Prerequisite.minCP
+import info.tweaked.model.plan.Prerequisite.MinCP
 import info.tweaked.model.unit._
 import units.CBOK._
 
@@ -27,7 +27,7 @@ object STAT210 extends HasUnit {
       "build on and broaden their theoretical and technical knowledge of statistical terminology, concepts and methodology, which will enable them to read and critically appraise scientific literature with some confidence."
     ),
 
-    prerequisite = minCP(72), //COSC220 and
+    prerequisite = MinCP(72), //COSC220 and
 
     taught = Seq(
       AssessmentDescription(

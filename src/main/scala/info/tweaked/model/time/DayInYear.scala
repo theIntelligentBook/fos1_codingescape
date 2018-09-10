@@ -110,6 +110,22 @@ object Month {
   val nov = new Month(10)
   val dec = new Month(11)
 
+  val fromName = Map(
+    "jan" -> jan,
+    "feb" -> feb,
+    "mar" -> mar,
+    "apr" -> apr,
+    "may" -> may,
+    "jun" -> jun,
+    "jul" -> jul,
+    "aug" -> aug,
+    "sep" -> sep,
+    "oct" -> oct,
+    "nov" -> nov,
+    "dec" -> dec)
+
+
+
 }
 
 
