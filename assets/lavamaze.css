@@ -1,0 +1,43 @@
+@import url('https://fonts.googleapis.com/css?family=Fira+Mono|Fira+Sans|Michroma');
+
+/*
+font-family: 'Michroma', sans-serif;
+font-family: 'Fira Mono', monospace;
+font-family: 'Fira Sans', sans-serif;
+ */
+
+.stageninja {
+    max-height: 5vw;
+}
+
+.stagenumber {
+    margin-right: 5vw;
+    font-size: 5vw;
+    line-height: 5vw;
+    font-family: 'Michroma', sans-serif;
+}
+
+.stageheader {
+    font-family: 'Michroma', sans-serif;
+    font-size: 5vh;
+    line-height: 5vw;
+}
+
+.congrats {
+    font-family: 'Michroma', sans-serif;
+    font-size: 5vh;
+    line-height: 5vw;
+}
+
+.topwrapper {
+    height: 100vh;
+    padding: 5vh;
+}
+
+.hgutter {
+    height: 5vh;
+}
+
+.pre {
+    font-family: 'Fira Mono', monospace;
+}

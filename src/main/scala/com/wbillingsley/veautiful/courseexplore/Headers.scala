@@ -2,6 +2,7 @@ package com.wbillingsley.veautiful.courseexplore
 
 import com.wbillingsley.handy.{Ref, RefFailed}
 import com.wbillingsley.veautiful._
+import lavamaze.Routing
 
 import scala.concurrent.Future
 

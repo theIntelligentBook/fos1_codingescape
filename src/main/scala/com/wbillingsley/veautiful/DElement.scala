@@ -3,7 +3,7 @@ package com.wbillingsley.veautiful
 import org.scalajs.dom
 import org.scalajs.dom.{Event, html}
 
-case class Lstnr(`type`:String, func:Event => _, usCapture:Boolean=true)
+case class Lstnr(`type`:String, func: Function1[Event, _], usCapture:Boolean=true)
 case class AttrVal(name:String, value:String)
 case class InlineStyle(name:String, value:String)
 case class EvtListener[T](`type`:String, f:Function[T, _], capture:Boolean)
@@ -32,9 +32,12 @@ case class DElement(name:String, uniqEl:Any = "") extends DiffNode {
       styles = el.styles
       applyStylesToNode(styles)
 
-      removeLsntrsFromNode(listeners.values)
+      if (listeners.keys != el.listeners.keys) {
+        println("Listeners differ")
+        removeLsntrsFromNode(listeners.values)
+        applyLsntrsToNode(listeners.values)
+      }
       listeners = el.listeners
-      applyLsntrsToNode(listeners.values)
   }
 
   def applyAttrsToNode(as:Iterable[AttrVal]):Unit = {
@@ -49,15 +52,29 @@ case class DElement(name:String, uniqEl:Any = "") extends DiffNode {
     }
   }
 
+  /**
+    * In DOM Events, it is very difficult to de-register an anonymous listener.
+    * And in our code, it is very easy to end up with an event listener being an anonymous
+    * function.
+    * So, in order to make changing event listeners practical, instead of registering the
+    * event listener, we always register this dispatcher function as the event listener.
+    */
+  def eventDispatch(e:Event):Unit = {
+    for {
+      h <- listeners.get(e.`type`)
+    } h.func.apply(e)
+  }
+
   def applyLsntrsToNode(as:Iterable[Lstnr]):Unit = {
+    println(s"There are ${as.toSeq.length} listeners")
     for { n <- domEl; a <- as } {
-      n.addEventListener(a.`type`, a.func, true)
+      n.addEventListener(a.`type`, eventDispatch, false)
     }
   }
 
   def removeLsntrsFromNode(as:Iterable[Lstnr]):Unit = {
     for { n <- domEl; a <- as } {
-      n.removeEventListener(a.`type`, a.func, true)
+      n.removeEventListener(a.`type`, eventDispatch, false)
     }
   }
 
@@ -161,6 +178,10 @@ object < {
   def h2 = apply("h2")
   def h3 = apply("h3")
   def h4 = apply("h4")
+  def pre = apply("pre")
+
+  def button = apply("button")
+  def textarea = apply("textarea")
 
   def ol = apply("ol")
   def ul = apply("ul")
@@ -184,6 +205,8 @@ object ^ {
     def :=(s:String) = AttrVal(n, s)
   }
 
+  def apply(s:String) = Attrable(s)
+
   def target = Attrable("target")
   def style = Attrable("style")
   def alt = Attrable("alt")
@@ -195,9 +218,11 @@ object ^ {
 
   case class Lsntrable(n:String) {
     def -->(e: => Unit ) = Lstnr(n, (x:Event) => e, true)
+    def ==>(e: (Event) => Unit ) = Lstnr(n, (x:Event) => e(x), true)
   }
 
   def onClick = Lsntrable("click")
+  def on(s:String) = Lsntrable(s)
 
   case class InlineStylable(n:String) {
     def :=(v:String) = InlineStyle(n, v)

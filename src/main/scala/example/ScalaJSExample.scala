@@ -1,13 +1,11 @@
 package example
 
-import com.wbillingsley.veautiful.courseexplore.{CourseLoader, Home, Routing, UnitViews}
 import com.wbillingsley.veautiful.{<, Attacher, DElement}
-import info.tweaked.model.hjson.RequirementParsing
+import lavamaze.Routing
 
 import scala.scalajs.js
 import org.scalajs.dom
 import org.scalajs.dom.raw.Event
-import units.COSC370
 
 @js.native
 trait EventName extends js.Object {
@@ -36,35 +34,11 @@ object ScalaJSExample {
 
     println("START NOW")
 
-    /*
-    for {
-      loaded <- CourseLoader.termsMap
-    } println(loaded)
-
-    for {
-      loaded <- CourseLoader.offeringsMap
-    } println(loaded)
-
-    for {
-      loaded <- CourseLoader.loadUnit("COSC220")
-    } println(loaded)
-
-
-    */
-
-
-    for {
-      loaded <- CourseLoader.loadCourse("DipIT")
-    } println(loaded)
-
-
-    println(RequirementParsing.parseRequirement("30cp to 48cp from COSC110, COSC101, COSC120"))
-
-    println(RequirementParsing.parseRequirement("COSC110, COSC101, COSC120"))
-
     root.render(Routing)
 
   }
+
+  def rerender() = root.render(Routing)
 
   /** Computes the square of an integer.
    *  This demonstrates unit testing.
