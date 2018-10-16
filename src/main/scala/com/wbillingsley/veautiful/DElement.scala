@@ -184,6 +184,8 @@ object ^ {
     def :=(s:String) = AttrVal(n, s)
   }
 
+  def target = Attrable("target")
+  def style = Attrable("style")
   def alt = Attrable("alt")
   def src = Attrable("src")
   def `class` = Attrable("class")
