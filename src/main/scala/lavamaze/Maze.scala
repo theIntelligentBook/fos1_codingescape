@@ -67,10 +67,10 @@ class Maze(name:String, val w:Int = 8, val h:Int = 6, defaultAction: () => Actio
   val cells:Seq[Array[Tile]] = for { y <- 0 until h } yield Array.fill[Tile](w)(Lava)
   cells(h - 1)(w - 1) = Maze.Goal
 
+  val goalDist:Seq[Array[Int]] = for { y <- 0 until h } yield Array.fill[Int](w)(99)
+
   var running = true
-  var spoilerPaths = false
   var monstersActive = true
-  var manualControl = true
   var showRoutes = false
   var routesConsiderMonsters = false
 
@@ -120,9 +120,19 @@ class Maze(name:String, val w:Int = 8, val h:Int = 6, defaultAction: () => Actio
     oc = None
   }
 
-  def makePath() = {
-    val ww = w - 1
-    val hh = h - 1
+  def makeSpoilerPath() = {
+    makePath(2)
+    cells(h-2)(w-1) = Maze.Floor
+    cells(h-2)(w-2) = Maze.Floor
+    cells(h-1)(w-2) = Maze.Floor
+    for { x <- 0 until w } cells(h/2 - 1)(x) = Maze.Floor
+    for { y <- 0 until h } cells(y)(w/2 - 1) = Maze.Floor
+  }
+
+
+  def makePath(offset:Int = 1) = {
+    val ww = w - offset
+    val hh = h - offset
     var x = 0
     var y = 0
 
@@ -133,14 +143,14 @@ class Maze(name:String, val w:Int = 8, val h:Int = 6, defaultAction: () => Actio
       if (!along && y < hh) {
         val run = randDist(hh - y)
         for { i <- 0 until run } {
-          println(s" ${y+i} $x")
+          //println(s" ${y+i} $x")
           cells(y + i)(x) = Maze.Floor
         }
         y = y + run
       } else if (x < ww) {
         val run = randDist(ww - x)
         for { i <- 0 until run } {
-          println(s" ${y} ${x+i}")
+          //println(s" ${y} ${x+i}")
           cells(y)(x + i) = Maze.Floor
         }
         x = x + run
@@ -149,6 +159,27 @@ class Maze(name:String, val w:Int = 8, val h:Int = 6, defaultAction: () => Actio
     }
   }
 
+  def goalDistance(x:Int, y:Int):Int = {
+    if (x >= 0 && x < w && y >= 0 && y < h) {
+      goalDist(y)(x)
+    } else 99
+  }
+
+  def resetGoalDist(): Unit = {
+    for { x <- 0 until w; y <- 0 until h} goalDist(y)(x) = 99
+  }
+
+  def check(x:Int, y:Int, dist:Int): Unit = {
+    goalDist(y)(x) = dist
+    for { d <- 0 until 4 } {
+      val move = Move(d)
+      val xx = x + move.dx
+      val yy = y + move.dy
+      if (xx >= 0 && xx < w && yy >= 0 && yy < h && cells(yy)(xx).isPassable && goalDist(yy)(xx) > dist + 1) {
+        check(xx, yy, dist + 1)
+      }
+    }
+  }
 
   def drawWidth = Maze.oneTile * w
   def drawHeight = Maze.oneTile * h
@@ -168,6 +199,13 @@ class Maze(name:String, val w:Int = 8, val h:Int = 6, defaultAction: () => Actio
       ctx.strokeStyle = Maze.floorStroke
       ctx.fillRect(x * Maze.oneTile, y * Maze.oneTile, Maze.oneTile, Maze.oneTile)
       ctx.strokeRect(x * Maze.oneTile, y * Maze.oneTile, Maze.oneTile, Maze.oneTile)
+
+      if (showRoutes) {
+        ctx.fillStyle = Maze.goalStroke
+        ctx.font = "20px sans-serif"
+
+        ctx.fillText(goalDist(y)(x).toString, Maze.oneTile * x + 4, Maze.oneTile * y + 40, 56)
+      }
     }
 
     def paintGoal(x:Int, y:Int): Unit = {
@@ -206,6 +244,10 @@ class Maze(name:String, val w:Int = 8, val h:Int = 6, defaultAction: () => Actio
 
     def paint(ctx:dom.CanvasRenderingContext2D): Unit = {
       if (action.done) {
+
+        resetGoalDist()
+        check(w-1, h-1, 0)
+
         x = x + action.dx
         y = y + action.dy
 
@@ -262,7 +304,15 @@ class Maze(name:String, val w:Int = 8, val h:Int = 6, defaultAction: () => Actio
       case _ => false
     })
 
-    def move(d:Int): Unit = {
+    def move(d:Int):Action = {
+      if (action.done && canMove(d)) {
+        Move(d)
+      } else {
+        Idle
+      }
+    }
+
+    def moveNow(d:Int): Unit = {
       if (action.done && canMove(d)) {
         action = Move(d)
       }

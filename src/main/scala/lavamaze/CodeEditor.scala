@@ -46,7 +46,7 @@ class CodeEditor(rows:Int = 10, disabled:Boolean = false, private var text:Strin
 
     ta.setAttribute("rows", rows.toString)
     if(disabled) {
-      ta.setAttribute("disabled", "true")
+      ta.setAttribute("readonly", "true")
     }
 
     ota = Some(ta)

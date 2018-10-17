@@ -33,6 +33,7 @@ object Stage1 {
   }
 
   def reset():Unit = {
+    instructions = List.empty
     editor.setText("")
     maze.Ninja.x = 0
     maze.Ninja.y = 0
@@ -49,11 +50,10 @@ object Stage1 {
 
       split(
         card("Programming by example")(
-          cardText(<.p(
-            """
-              |Use the buttons to guide the ninja through the maze. As you do, I'll write the program.
-            """.stripMargin
-          )),
+          cardText(
+            <.p("Use the buttons to guide the ninja through the maze. As you do, I'll write the program for you!"),
+            <.p("Click Run at any time to see it in action")
+          ),
           cardText(
             <.div(^.cls := "btn-group",
               <.button(^.cls := "btn btn-secondary", ^.onClick --> tryDown, "Down"),
@@ -64,8 +64,10 @@ object Stage1 {
             editor
           ),
           cardText(<.p(),
-            <.button(^.cls := "btn btn-primary", ^.onClick --> reset, "Reset"),
-            <.button(^.cls := "btn btn-primary", ^.onClick --> run, "Run")
+            <("div", "stage1ctrl")(^.cls := "btn-group",
+              <.button(^.cls := "btn btn-outline-secondary", ^.onClick --> reset, "Reset"),
+              <.button(^.cls := "btn btn-outline-primary", ^.onClick --> run, "Run")
+            )
           )
         )
       )(
@@ -76,13 +78,22 @@ object Stage1 {
       hgutter,
       if (reachedGoal) {
         <.div(
-          <.p(^.cls := "congrats", "Code: 001"),
-          <.p("You've reached the goal. Click the run button to see it run your script. And before you move on, copy and paste the text.")
+          <.p(^.cls := "congrats", "Code: 0000"),
+          <.p("You've reached the goal. Click the run button to see it run your script. And before you move on, copy and paste the text."),
+          <("div", "stage1")(^.cls := "btn-group",
+            <.button(^.cls := "btn btn-outline-primary", ^.onClick --> Routing.routeTo(Routing.Stage2R), "Stage 2")
+          )
         )
-      } else <.p(),
-      <.button(^.cls := "btn btn-primary", "Stage 2")
+      } else <("div", "stage1")(^.cls := "btn-group",
+        <.button(^.cls := "btn btn-outline-light", ^.onClick --> next, "Stage 2")
+      )
+
     )
 
+  }
+
+  def next(): Unit = {
+    Routing.routeTo(Routing.Stage2R)
   }
 
   def tryDown() = {
@@ -92,7 +103,7 @@ object Stage1 {
         case l => Down(1) :: l
       }
       editor.setText(instructions.reverse.map(_.stringify).mkString("\n"))
-      maze.Ninja.move(Maze.SOUTH)
+      maze.Ninja.moveNow(Maze.SOUTH)
     }
   }
 
@@ -103,7 +114,7 @@ object Stage1 {
         case l => Right(1) :: l
       }
       editor.setText(instructions.reverse.map(_.stringify).mkString("\n"))
-      maze.Ninja.move(Maze.EAST)
+      maze.Ninja.moveNow(Maze.EAST)
     }
   }
 

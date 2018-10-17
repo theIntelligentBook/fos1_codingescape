@@ -3,7 +3,7 @@ package lavamaze
 import org.scalajs.dom
 
 import scala.collection.mutable
-import scala.scalajs.js.annotation._
+import scala.scalajs.js.annotation.{JSExport, _}
 
 @JSExportTopLevel("Commands")
 object Commands {
@@ -16,10 +16,40 @@ object Commands {
   var activeMaze:Option[Maze] = None
 
   @JSExport
-  def right(i:Int) = activeMaze.foreach { m => m.actionQueue.enqueue(Seq.fill(i)(() => Move(Maze.EAST)):_*)}
+  def move(d:Int) = activeMaze.foreach { m => m.actionQueue.enqueue(() => m.Ninja.move(d))}
 
   @JSExport
-  def down(i:Int) = activeMaze.foreach { m => m.actionQueue.enqueue(Seq.fill(i)(() => Move(Maze.SOUTH)):_*)}
+  def right(i:Int) = activeMaze.foreach { m => m.actionQueue.enqueue(Seq.fill(i)(() => m.Ninja.move(Maze.EAST)):_*)}
+
+  @JSExport
+  def down(i:Int) = activeMaze.foreach { m => m.actionQueue.enqueue(Seq.fill(i)(() => m.Ninja.move(Maze.SOUTH)):_*)}
+
+  @JSExport
+  def left(i:Int) = activeMaze.foreach { m => m.actionQueue.enqueue(Seq.fill(i)(() => m.Ninja.move(Maze.WEST)):_*)}
+
+  @JSExport
+  def up(i:Int) = activeMaze.foreach { m => m.actionQueue.enqueue(Seq.fill(i)(() => m.Ninja.move(Maze.NORTH)):_*)}
+
+  @JSExport
+  def look(d:Int):Int = activeMaze match {
+    case Some(m) => {
+      val move = Move(d)
+      m.goalDistance(m.Ninja.x + move.dx, m.Ninja.y + move.dy)
+    }
+    case _ => 99
+  }
+
+  @JSExport
+  def canGoRight() = activeMaze match {
+    case Some(m) => m.Ninja.canMove(Maze.EAST)
+    case _ => false
+  }
+
+  @JSExport
+  def canGoDown() = activeMaze match {
+    case Some(m) => m.Ninja.canMove(Maze.SOUTH)
+    case _ => false
+  }
 
   /* Used for the draw loop */
   val actions = mutable.Map.empty[String, () => Unit]
