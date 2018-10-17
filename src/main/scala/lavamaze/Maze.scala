@@ -45,6 +45,11 @@ object Maze {
 
   val ninjaHighlight = "rgba(0, 0, 255, 0.5)"
 
+  val guardHighlight = "rgba(255, 0, 0, 0.5)"
+  val guardHighlightStroke = "rgb(95, 0, 0)"
+  val guardFill = "rgb(200,50,50)"
+  val guardStroke = "rgb(200,70,70)"
+
 
   sealed trait Tile {
     def isPassable = true
@@ -76,7 +81,12 @@ class Maze(name:String, val w:Int = 8, val h:Int = 6, defaultAction: () => Actio
 
   var oc:Option[HTMLCanvasElement] = None
 
-  val blobs = Array.fill(50)(LavaBlob(w * Maze.oneTile, h * Maze.oneTile))
+  val lavaBlobs = Array.fill(50)(LavaBlob(w * Maze.oneTile, h * Maze.oneTile))
+
+  var blobGuards:Array[Blob] = Array.empty
+  def createBlobs(i:Int): Unit = {
+    blobGuards = Array.fill(i)(new Blob(w, h))
+  }
 
   var actionQueue = mutable.Queue.empty[() => Action]
 
@@ -169,13 +179,18 @@ class Maze(name:String, val w:Int = 8, val h:Int = 6, defaultAction: () => Actio
     for { x <- 0 until w; y <- 0 until h} goalDist(y)(x) = 99
   }
 
+  def monstersAt(x:Int, y:Int) = blobGuards.exists { b => b.x == x && b.y == y }
+
   def check(x:Int, y:Int, dist:Int): Unit = {
     goalDist(y)(x) = dist
     for { d <- 0 until 4 } {
       val move = Move(d)
       val xx = x + move.dx
       val yy = y + move.dy
-      if (xx >= 0 && xx < w && yy >= 0 && yy < h && cells(yy)(xx).isPassable && goalDist(yy)(xx) > dist + 1) {
+      if (
+        xx >= 0 && xx < w && yy >= 0 && yy < h && cells(yy)(xx).isPassable && goalDist(yy)(xx) > dist + 1 &&
+        !(routesConsiderMonsters && monstersAt(xx, yy))
+      ) {
         check(xx, yy, dist + 1)
       }
     }
@@ -191,7 +206,7 @@ class Maze(name:String, val w:Int = 8, val h:Int = 6, defaultAction: () => Actio
     // Draw the lava
     ctx.fillStyle = Maze.lavaStyle
     ctx.fillRect(0, 0, drawWidth, drawHeight)
-    for { blob <- blobs } blob.draw(ctx)
+    for { blob <- lavaBlobs } blob.draw(ctx)
 
 
     def paintFloor(x:Int, y:Int): Unit = {
@@ -233,6 +248,8 @@ class Maze(name:String, val w:Int = 8, val h:Int = 6, defaultAction: () => Actio
 
     Ninja.paint(ctx)
 
+    for { b <- blobGuards } b.paint(ctx)
+
   }
 
 
@@ -241,8 +258,13 @@ class Maze(name:String, val w:Int = 8, val h:Int = 6, defaultAction: () => Actio
     var y = 0
 
     var action:Action = Idle
+    var alive = true
 
     def paint(ctx:dom.CanvasRenderingContext2D): Unit = {
+      if (monstersAt(x, y)) {
+        alive = false
+      }
+
       if (action.done) {
 
         resetGoalDist()
@@ -268,35 +290,42 @@ class Maze(name:String, val w:Int = 8, val h:Int = 6, defaultAction: () => Actio
       ctx.fillStyle = Maze.ninjaHighlight
       ctx.fillRect(tToP(x), tToP(y), Maze.oneTile, Maze.oneTile)
 
-      // head
-      ctx.fillStyle = Maze.maskFill
-      ctx.strokeStyle = Maze.maskStroke
-      ctx.beginPath()
-      ctx.moveTo(xx + Maze.halfTile, yy + Maze.halfTile)
-      ctx.arc(xx + Maze.halfTile, yy + Maze.halfTile, Maze.quarterTile, 0, 2 * Math.PI)
-      ctx.fill()
+      if (alive) {
+        // head
+        ctx.fillStyle = Maze.maskFill
+        ctx.strokeStyle = Maze.maskStroke
+        ctx.beginPath()
+        ctx.moveTo(xx + Maze.halfTile, yy + Maze.halfTile)
+        ctx.arc(xx + Maze.halfTile, yy + Maze.halfTile, Maze.quarterTile, 0, 2 * Math.PI)
+        ctx.fill()
 
-      // mask opening
-      ctx.fillStyle = Maze.maskOpeningFill
-      ctx.strokeStyle = Maze.maskOpeningStroke
-      ctx.beginPath()
-      ctx.moveTo(xx + Maze.halfTile, yy + Maze.halfTile)
-      ctx.arc(xx + Maze.halfTile, yy + Maze.quarterTile + Maze.eighthTile, Maze.quarterTile, 0.5, Math.PI - 0.5)
-      ctx.fill()
+        // mask opening
+        ctx.fillStyle = Maze.maskOpeningFill
+        ctx.strokeStyle = Maze.maskOpeningStroke
+        ctx.beginPath()
+        ctx.moveTo(xx + Maze.halfTile, yy + Maze.halfTile)
+        ctx.arc(xx + Maze.halfTile, yy + Maze.quarterTile + Maze.eighthTile, Maze.quarterTile, 0.5, Math.PI - 0.5)
+        ctx.fill()
 
-      // eyes
-      ctx.fillStyle = "rgb(20,20,20)"
-      ctx.beginPath()
-      ctx.moveTo(xx + Maze.halfTile - Maze.eighthTile, yy + Maze.halfTile + 2)
-      ctx.arc(xx + Maze.halfTile - Maze.eighthTile, yy + Maze.halfTile + 2, 2, 0, 2 * Math.PI)
-      ctx.fill()
-      ctx.beginPath()
-      ctx.moveTo(xx + Maze.halfTile + Maze.eighthTile, yy + Maze.halfTile + 2)
-      ctx.arc(xx + Maze.halfTile + Maze.eighthTile, yy + Maze.halfTile + 2, 2, 0, 2 * Math.PI)
-      ctx.fill()
+        // eyes
+        ctx.fillStyle = "rgb(20,20,20)"
+        ctx.beginPath()
+        ctx.moveTo(xx + Maze.halfTile - Maze.eighthTile, yy + Maze.halfTile + 2)
+        ctx.arc(xx + Maze.halfTile - Maze.eighthTile, yy + Maze.halfTile + 2, 2, 0, 2 * Math.PI)
+        ctx.fill()
+        ctx.beginPath()
+        ctx.moveTo(xx + Maze.halfTile + Maze.eighthTile, yy + Maze.halfTile + 2)
+        ctx.arc(xx + Maze.halfTile + Maze.eighthTile, yy + Maze.halfTile + 2, 2, 0, 2 * Math.PI)
+        ctx.fill()
+      } else {
+        ctx.fillStyle = Maze.guardFill
+        ctx.fillRect(xx + Maze.halfTile - 5, yy + Maze.halfTile - 25, 10, 50)
+        ctx.fillRect(xx + Maze.halfTile - 15, yy + Maze.halfTile - 15, 30, 10)
+      }
+
     }
 
-    def canMove(d:Int):Boolean = action.done && (d match {
+    def canMove(d:Int):Boolean = alive && action.done && (d match {
       case Maze.EAST => x + 1 < w && cells(y)(x + 1).isPassable
       case Maze.WEST => x > 0 && cells(y)(x - 1).isPassable
       case Maze.SOUTH => y + 1 < h && cells(y + 1)(x).isPassable
@@ -319,6 +348,72 @@ class Maze(name:String, val w:Int = 8, val h:Int = 6, defaultAction: () => Actio
     }
 
   }
+
+  class Blob(w:Int, h:Int) {
+
+    var x = 0
+    var y = 0
+    var action:Action = Idle
+
+    def findRandomTile(): Unit = {
+      do {
+        x = (Math.random() * w).toInt
+        y = (Math.random() * h).toInt
+      } while (x == 0 || y == 0 || !cells(y)(x).isPassable)
+    }
+
+    findRandomTile()
+
+    def randomMove():Action = {
+      val avail = for { d <- 0 until 4 if {
+        val m = Move(d)
+        val xx = x + m.dx
+        val yy = y + m.dy
+        xx >= 0 && yy >= 0 && xx < w && yy < h && cells(yy)(xx).isPassable
+      }} yield d
+
+      Move(avail((Math.random() * avail.length).toInt))
+    }
+
+    def paint(ctx:dom.CanvasRenderingContext2D): Unit = {
+      val time = System.currentTimeMillis()
+      val theta = time * 6.3 / 1000
+
+      if (action.done) {
+        x = x + action.dx
+        y = y + action.dy
+        action = randomMove()
+      }
+
+      val blobWidth = (Maze.quarterTile + Maze.eighthTile) + (Maze.eighthTile * Math.sin(theta))
+      val blobHeight = (Maze.quarterTile + Maze.eighthTile) + (Maze.eighthTile * Math.cos(theta))
+
+      def tToP(i:Int) = i * Maze.oneTile
+
+      // highlight active square
+      ctx.fillStyle = Maze.guardHighlight
+      ctx.strokeStyle = Maze.guardHighlightStroke
+      ctx.fillRect(tToP(x), tToP(y), Maze.oneTile, Maze.oneTile)
+
+      // draw the blob
+      ctx.fillStyle = Maze.guardFill
+      ctx.strokeStyle = Maze.guardStroke
+      val xx = tToP(x) + action.drawX
+      val yy = tToP(y) + action.drawY
+
+      ctx.save()
+      ctx.beginPath()
+      ctx.translate(xx + Maze.halfTile, yy + Maze.halfTile)
+      ctx.scale(blobWidth, blobHeight)
+      ctx.arc(0, 0, 0.5, 0, 2 * Math.PI)
+      ctx.restore()
+      ctx.fill()
+      ctx.stroke()
+    }
+
+
+  }
+
 }
 
 case class LavaBlob(w:Double, h:Double, var x:Double = 0, var y:Double = 0, var r:Double = 0) {
@@ -400,3 +495,5 @@ case class Move(d:Int) extends Action {
   }
 
 }
+
+

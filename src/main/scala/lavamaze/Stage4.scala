@@ -10,6 +10,7 @@ object Stage4 {
   val editor = new CodeEditor(text = "", rows=8, disabled=false)
 
   var reachedGoal = false
+  val code = "+0001"
 
   val maze:Maze = new Maze("Stage 4",
     defaultAction = () => {
@@ -83,7 +84,7 @@ object Stage4 {
           hgutter,
           if (reachedGoal) {
             <.div(
-              <.p(^.cls := "congrats", "Code: 001"),
+              <.p(^.cls := "congrats", s"Code: $code"),
               <.p("Well that was down-right trivial! But you know we're going to spoil the party in the next stage..."),
               <("div", "stage2")(^.cls := "btn-group",
                 <.button(^.cls := "btn btn-outline-secondary", ^.onClick --> prev, "Stage 3"),

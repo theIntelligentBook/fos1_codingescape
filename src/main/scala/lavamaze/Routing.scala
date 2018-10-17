@@ -31,6 +31,7 @@ object Routing extends ElementComponent(<.div()) {
     case Stage5R => Stage5.node
     case Stage6R => Stage6.node
     case Stage7R => Stage7.node
+    case Stage8R => Stage8.node
   }
 
   override def afterAttach() = {

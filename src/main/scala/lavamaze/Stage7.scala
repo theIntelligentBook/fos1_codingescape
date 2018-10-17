@@ -1,6 +1,9 @@
 package lavamaze
 
 import com.wbillingsley.veautiful.{<, ^}
+import lavamaze.Stage5.reachedGoal
+import org.scalajs.dom
+import org.scalajs.dom.raw.HTMLInputElement
 
 import scala.scalajs.js
 
@@ -21,8 +24,10 @@ object Stage7 {
     """.stripMargin, rows=8, disabled=true)
 
   var reachedGoal = false
+  val code = "+0001"
 
   val maze:Maze = new Maze("Stage 7",
+    w = 12, h = 8,
     defaultAction = () => {
       js.eval(editor.getText)
       Idle
@@ -33,12 +38,16 @@ object Stage7 {
     }
   )
 
+  maze.makePath()
   maze.makeSpoilerPath()
   maze.showRoutes = true
+  maze.routesConsiderMonsters = true
+  maze.createBlobs(2)
 
   def run(): Unit = {
     Commands.activeMaze = Some(maze)
 
+    maze.Ninja.alive = true
     maze.Ninja.x = 0
     maze.Ninja.y = 0
     maze.Ninja.action = Idle
@@ -46,11 +55,14 @@ object Stage7 {
     js.eval(editor.getText)
   }
 
-  def reset():Unit = {
-    editor.setText("")
-    maze.Ninja.x = 0
-    maze.Ninja.y = 0
-    maze.Ninja.action = Idle
+  def checkPassword(e:dom.Event): Unit = {
+    val s = e.target match {
+      case x:HTMLInputElement => x.value
+    }
+    if (s == "gloop") {
+      reachedGoal = true
+      Routing.afterAttach()
+    }
   }
 
   def node() = {
@@ -62,17 +74,19 @@ object Stage7 {
       hgutter,
 
       split(
-        card(
+        card("Escapology")(
           cardText(
-            <.p("The Blob Guards have arrived... only usually our ninja still escapes."),
-            <.p("The question is - what did we do?")
+            <.p("The Blob Guards have arrived... how can we escape without running into a blob?"),
+            <.p("Here's our little attempt, but let's chat about alternatives. CLAP to let us know you're up to this stage.")
           ),
           cardText(<.p(),
             editor
           ),
           cardText(<.p(),
             <.button(^.cls := "btn btn-primary", ^.onClick --> run, "Run")
-          )
+          ),
+          <.h4("Password"),
+          <("input")(^.cls := "form-control", ^("type") := "text", ^.on("input") ==> checkPassword)
         )
       )(
         <.div(
@@ -82,7 +96,7 @@ object Stage7 {
           hgutter,
           if (reachedGoal) {
             <.div(
-              <.p(^.cls := "congrats", "Code: 001"),
+              <.p(^.cls := "congrats", s"Code: $code"),
               <.p("Well that was down-right trivial! But you know we're going to spoil the party in the next stage..."),
               <("div", "stage7")(^.cls := "btn-group",
                 <.button(^.cls := "btn btn-outline-secondary", ^.onClick --> prev, "Stage 6"),

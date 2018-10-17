@@ -12,6 +12,8 @@ object Stage1 {
 
   var reachedGoal = false
 
+  val code = "0000"
+
   val maze:Maze = new Maze("Stage 1", onGoal = () => {
     reachedGoal = true
     println("Complete")
@@ -78,7 +80,7 @@ object Stage1 {
       hgutter,
       if (reachedGoal) {
         <.div(
-          <.p(^.cls := "congrats", "Code: 0000"),
+          <.p(^.cls := "congrats", s"Code: $code"),
           <.p("You've reached the goal. Click the run button to see it run your script. And before you move on, copy and paste the text."),
           <("div", "stage1")(^.cls := "btn-group",
             <.button(^.cls := "btn btn-outline-primary", ^.onClick --> Routing.routeTo(Routing.Stage2R), "Stage 2")

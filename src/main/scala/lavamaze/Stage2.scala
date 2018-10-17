@@ -10,6 +10,7 @@ object Stage2 {
   val editor = new CodeEditor(text = "", rows=8, disabled=false)
 
   var reachedGoal = false
+  val code = "+0010"
 
   val maze:Maze = new Maze("Stage 2", onGoal = () => {
     reachedGoal = true
@@ -67,7 +68,7 @@ object Stage2 {
       hgutter,
       if (reachedGoal) {
         <.div(
-          <.p(^.cls := "congrats", "Code: 001"),
+          <.p(^.cls := "congrats", s"Code: $code"),
           <.p("Well done. But I wouldn't want to rewrite my code for every maze. Time to move on..."),
           <("div", "stage2")(^.cls := "btn-group",
             <.button(^.cls := "btn btn-outline-secondary", ^.onClick --> prev, "Stage 1"),

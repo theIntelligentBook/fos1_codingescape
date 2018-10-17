@@ -18,6 +18,7 @@ object Stage5 {
     """.stripMargin, rows=8, disabled=true)
 
   var reachedGoal = false
+  val code = "invert!"
 
   val maze:Maze = new Maze("Stage 5",
     defaultAction = () => {
@@ -75,7 +76,7 @@ object Stage5 {
           hgutter,
           if (reachedGoal) {
             <.div(
-              <.p(^.cls := "congrats", "Code: 001"),
+              <.p(^.cls := "congrats", s"Code: $code"),
               <.p("Poster posted, on to try it out..."),
               <("div", "stage5")(^.cls := "btn-group",
                 <.button(^.cls := "btn btn-outline-secondary", ^.onClick --> prev, "Stage 4"),

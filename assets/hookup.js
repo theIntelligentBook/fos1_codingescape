@@ -4,6 +4,8 @@ let ping = () => Commands.ping();
 
 let right = (i) => Commands.right(i);
 let down = (i) => Commands.down(i);
+let left = (i) => Commands.left(i);
+let up = (i) => Commands.up(i);
 
 let canGoRight = () => Commands.canGoRight()
 let canGoDown = () => Commands.canGoDown()

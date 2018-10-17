@@ -10,6 +10,7 @@ object Stage3 {
   import Headers._
 
   var reachedGoal = false
+  val code = "+0110"
 
   val maze:Maze = new Maze("Stage 2", onGoal = () => {
     reachedGoal = true
@@ -64,7 +65,7 @@ object Stage3 {
       hgutter,
       if (reachedGoal) {
         <.div(
-          <.p(^.cls := "congrats", "Code: 001"),
+          <.p(^.cls := "congrats", s"Code: $code"),
           <.p("Cards of Doom champion!"),
           <("div", "stage3")(^.cls := "btn-group",
             <.button(^.cls := "btn btn-outline-secondary", ^.onClick --> prev, "Stage 2"),
