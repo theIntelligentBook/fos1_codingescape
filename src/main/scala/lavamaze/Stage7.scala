@@ -31,10 +31,6 @@ object Stage7 {
     defaultAction = () => {
       js.eval(editor.getText)
       Idle
-    },
-    onGoal = () => {
-      reachedGoal = true
-      Routing.afterAttach()
     }
   )
 
@@ -97,7 +93,7 @@ object Stage7 {
           if (reachedGoal) {
             <.div(
               <.p(^.cls := "congrats", s"Code: $code"),
-              <.p("Well that was down-right trivial! But you know we're going to spoil the party in the next stage..."),
+              <.p("But now it is time for our own escape with the final code..."),
               <("div", "stage7")(^.cls := "btn-group",
                 <.button(^.cls := "btn btn-outline-secondary", ^.onClick --> prev, "Stage 6"),
                 <.button(^.cls := "btn btn-outline-primary", ^.onClick --> next, "Stage 8")

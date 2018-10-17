@@ -1,21 +1,21 @@
 "use strict";
 
-let ping = () => Commands.ping();
+window.ping = () => Commands.ping();
 
-let right = (i) => Commands.right(i);
-let down = (i) => Commands.down(i);
-let left = (i) => Commands.left(i);
-let up = (i) => Commands.up(i);
+window.right = (i) => Commands.right(i);
+window.down = (i) => Commands.down(i);
+window.left = (i) => Commands.left(i);
+window.up = (i) => Commands.up(i);
 
-let canGoRight = () => Commands.canGoRight()
-let canGoDown = () => Commands.canGoDown()
+window.canGoRight = () => Commands.canGoRight()
+window.canGoDown = () => Commands.canGoDown()
 
-let look = (d) => Commands.look(d)
-let lookRight = () => Commands.look(0)
-let lookLeft = () => Commands.look(2)
-let lookUp = () => Commands.look(3)
-let lookDown = () => Commands.look(1)
+window.look = (d) => Commands.look(d)
+window.lookRight = () => Commands.look(0)
+window.lookLeft = () => Commands.look(2)
+window.lookUp = () => Commands.look(3)
+window.lookDown = () => Commands.look(1)
 
-let ownDistance = () => Commands.look(-1)
+window.ownDistance = () => Commands.look(-1)
 
-let move = (d) => Commands.move(d)
+window.move = (d) => Commands.move(d)

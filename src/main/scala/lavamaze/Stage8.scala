@@ -46,27 +46,27 @@ object Stage8 {
         card("I hope you are watching the clock!")(
           cardText(
             <.div(
-              <.p("And so our final conundrum is a simple 4-bit calculation..."),
+              <.p("And so our final conundrum is a 4-bit calculation..."),
               <.pre(
-                if (!Stage1.reachedGoal) Stage1.code else "(undiscovered)"
+                if (Stage1.reachedGoal) Stage1.code else "(undiscovered)"
               ),
               <.pre(
-                if (!Stage2.reachedGoal) Stage2.code else "(undiscovered)"
+                if (Stage2.reachedGoal) Stage2.code else "(undiscovered)"
               ),
               <.pre(
-                if (!Stage3.reachedGoal) Stage3.code else "(undiscovered)"
+                if (Stage3.reachedGoal) Stage3.code else "(undiscovered)"
               ),
               <.pre(
-                if (!Stage4.reachedGoal) Stage4.code else "(undiscovered)"
+                if (Stage4.reachedGoal) Stage4.code else "(undiscovered)"
               ),
               <.pre(
-                if (!Stage5.reachedGoal) Stage5.code else "(undiscovered)"
+                if (Stage5.reachedGoal) Stage5.code else "(undiscovered)"
               ),
               <.pre(
-                if (!Stage6.reachedGoal) Stage6.code else "(undiscovered)"
+                if (Stage6.reachedGoal) Stage6.code else "(undiscovered)"
               ),
               <.pre(
-                if (!Stage7.reachedGoal) Stage7.code else "(undiscovered)"
+                if (Stage7.reachedGoal) Stage7.code else "(undiscovered)"
               ),
               <.pre(
                 "answer, in decimals"

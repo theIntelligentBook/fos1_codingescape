@@ -78,7 +78,7 @@ object Stage6 {
           if (reachedGoal) {
             <.div(
               <.p(^.cls := "congrats", s"Code: $code"),
-              <.p("Well that was down-right trivial! But you know we're going to spoil the party in the next stage..."),
+              <.p("This maze's days are numbered! (Or it's tiles at least). Just as well there's no guards around yet..."),
               <("div", "stage2")(^.cls := "btn-group",
                 <.button(^.cls := "btn btn-outline-secondary", ^.onClick --> prev, "Stage 5"),
                 <.button(^.cls := "btn btn-outline-primary", ^.onClick --> next, "Stage 7")
