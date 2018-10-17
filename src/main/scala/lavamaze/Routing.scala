@@ -15,7 +15,7 @@ object Routing extends ElementComponent(<.div()) {
   case object Stage7R extends Route
   case object Stage8R extends Route
 
-  var route:Route = Stage1R
+  var route:Route = HomeRoute
 
   def routeTo(r:Route) = {
     route = r
@@ -23,7 +23,7 @@ object Routing extends ElementComponent(<.div()) {
   }
 
   def render:VNode = route match {
-    case HomeRoute => Headers.stageHeader(1, "Hello")
+    case HomeRoute => Stage0.node
     case Stage1R => Stage1.node
     case Stage2R => Stage2.node
     case Stage3R => Stage3.node
