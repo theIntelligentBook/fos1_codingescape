@@ -83,10 +83,12 @@ object Stage1 {
           <.p(^.cls := "congrats", s"Code: $code"),
           <.p("You've reached the goal. Click the run button to see it run your script. And before you move on, copy and paste the text."),
           <("div", "stage1")(^.cls := "btn-group",
+            <.button(^.cls := "btn btn-outline-secondary", ^.onClick --> next, "Stage 0"),
             <.button(^.cls := "btn btn-outline-primary", ^.onClick --> Routing.routeTo(Routing.Stage2R), "Stage 2")
           )
         )
       } else <("div", "stage1")(^.cls := "btn-group",
+        <.button(^.cls := "btn btn-outline-secondary", ^.onClick --> next, "Stage 0"),
         <.button(^.cls := "btn btn-outline-light", ^.onClick --> next, "Stage 2")
       )
 

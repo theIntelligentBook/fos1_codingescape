@@ -40,22 +40,26 @@ object Stage0 {
   def submit() = {
     import dom.ext.Ajax
 
-    val data = Seq(
+    val dataSeq = Seq(
       new js.Date().toISOString(),
       user,
       names,
       school
-    ).map(csvify).mkString(",")
+    )
 
-    val url = "students"
-    Ajax.post(url, data)
-      .recoverWith {
-        case x:Throwable => x.printStackTrace(); Future.failed(x)
-      }
-      .foreach { _  =>
-        reachedGoal = true
-        Routing.afterAttach()
-      }
+    if (!dataSeq.exists(_.trim.isEmpty)) {
+      val data = dataSeq.map(csvify).mkString(",")
+
+      val url = "/lavamaze/students"
+      Ajax.post(url, data)
+        .recoverWith {
+          case x: Throwable => x.printStackTrace(); Future.failed(x)
+        }
+        .foreach { _ =>
+          reachedGoal = true
+          Routing.afterAttach()
+        }
+    }
 
   }
 
@@ -72,21 +76,23 @@ object Stage0 {
         card("Welcome to the maze...")(
           cardText(
             <.p("First, we need to know who you are for security reasons"),
-            <.div(^.cls := "form-group",
-              <("label")("Username"),
-              <("input")(^("type") := "text", ^.cls := "form-control", ^.on("input") ==> setUser, ^("placeholder") := "The one you logged in with")
-            ),
-            <.div(^.cls := "form-group",
-              <("label")("Names"),
-              <("textarea")(^("rows") := "2", ^.cls := "form-control", ^.on("input") ==> setNames, ^("placeholder") := "Your real names")
-            ),
-            <.div(^.cls := "form-group",
-              <("label")("School"),
-              <("input")(^("type") := "text", ^.cls := "form-control", ^.on("input") ==> setSchool, ^("placeholder") := "Your school")
-            ),
-            <.div(^.cls := "form-group",
-              <("label")("Username"),
-                <("input")(^("type") := "text", ^.cls := "form-control", ^.on("input") ==> setTeam, ^("placeholder") := "eg, Jumping jellybeans")
+            <("form")(
+              <.div(^.cls := "form-group",
+                <("label")("Username *"),
+                <("input")(^("type") := "text", ^.cls := "form-control", ^("required") := "required", ^.on("input") ==> setUser, ^("placeholder") := "The one you logged in with")
+              ),
+              <.div(^.cls := "form-group",
+                <("label")("Names *"),
+                <("textarea")(^("rows") := "2", ^.cls := "form-control", ^("required") := "required", ^.on("input") ==> setNames, ^("placeholder") := "Your real names")
+              ),
+              <.div(^.cls := "form-group",
+                <("label")("School *"),
+                <("input")(^("type") := "text", ^.cls := "form-control", ^("required") := "required", ^.on("input") ==> setSchool, ^("placeholder") := "Your school")
+              ),
+              <.div(^.cls := "form-group",
+                <("label")("Team name"),
+                  <("input")(^("type") := "text", ^.cls := "form-control", ^.on("input") ==> setTeam, ^("placeholder") := "eg, Jumping jellybeans")
+              )
             ),
             <.button(^.cls := "btn btn-primary", ^.onClick --> submit, "Save")
           )
