@@ -39,7 +39,7 @@ object Stage8 {
         card("Password")(
           <.p("Maximum two characters"),
           <.div(
-            <("input")(^.cls := "form-control", ^("type") := "text", ^("maxlength") := "2", ^.on("input") ==> checkPassword)
+            <("input")(^.cls := "form-control", ^.attr("type") := "text", ^.attr("maxlength") := "2", ^.on("input") ==> checkPassword)
           )
         )
       )(
@@ -47,28 +47,28 @@ object Stage8 {
           cardText(
             <.div(
               <.p("And so our final conundrum is a 4-bit calculation..."),
-              <.pre(
+              <("pre")(
                 if (Stage1.reachedGoal) Stage1.code else "(undiscovered)"
               ),
-              <.pre(
+              <("pre")(
                 if (Stage2.reachedGoal) Stage2.code else "(undiscovered)"
               ),
-              <.pre(
+              <("pre")(
                 if (Stage3.reachedGoal) Stage3.code else "(undiscovered)"
               ),
-              <.pre(
+              <("pre")(
                 if (Stage4.reachedGoal) Stage4.code else "(undiscovered)"
               ),
-              <.pre(
+              <("pre")(
                 if (Stage5.reachedGoal) Stage5.code else "(undiscovered)"
               ),
-              <.pre(
+              <("pre")(
                 if (Stage6.reachedGoal) Stage6.code else "(undiscovered)"
               ),
-              <.pre(
+              <("pre")(
                 if (Stage7.reachedGoal) Stage7.code else "(undiscovered)"
               ),
-              <.pre(
+              <("pre")(
                 "answer, in decimals"
               )
             )

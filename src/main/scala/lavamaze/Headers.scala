@@ -44,7 +44,7 @@ object Headers {
 
 
   def codeEditor(get: => String, set: (String) => Unit, rows:Int = 10, disabled:Boolean = false) = <.div(
-    <.textarea(^.cls := "form-control", ^("rows") := rows.toString, ^("disabled") := disabled.toString, ^.on("change") ==> { (evt) =>
+    <.textarea(^.cls := "form-control", ^.attr("rows") := rows.toString, ^.attr("disabled") := disabled.toString, ^.on("change") ==> { (evt) =>
       evt.target match {
         case ta: HTMLTextAreaElement => set(ta.value)
       }

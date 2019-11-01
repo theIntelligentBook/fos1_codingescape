@@ -19,16 +19,16 @@ object Commands {
   def move(d:Int) = activeMaze.foreach { m => m.actionQueue.enqueue(() => m.Ninja.move(d))}
 
   @JSExport
-  def right(i:Int) = activeMaze.foreach { m => m.actionQueue.enqueue(Seq.fill(i)(() => m.Ninja.move(Maze.EAST)):_*)}
+  def right(i:Int) = activeMaze.foreach { m => m.actionQueue.enqueueAll(Seq.fill(i)(() => m.Ninja.move(Maze.EAST)))}
 
   @JSExport
-  def down(i:Int) = activeMaze.foreach { m => m.actionQueue.enqueue(Seq.fill(i)(() => m.Ninja.move(Maze.SOUTH)):_*)}
+  def down(i:Int) = activeMaze.foreach { m => m.actionQueue.enqueueAll(Seq.fill(i)(() => m.Ninja.move(Maze.SOUTH)))}
 
   @JSExport
-  def left(i:Int) = activeMaze.foreach { m => m.actionQueue.enqueue(Seq.fill(i)(() => m.Ninja.move(Maze.WEST)):_*)}
+  def left(i:Int) = activeMaze.foreach { m => m.actionQueue.enqueueAll(Seq.fill(i)(() => m.Ninja.move(Maze.WEST)))}
 
   @JSExport
-  def up(i:Int) = activeMaze.foreach { m => m.actionQueue.enqueue(Seq.fill(i)(() => m.Ninja.move(Maze.NORTH)):_*)}
+  def up(i:Int) = activeMaze.foreach { m => m.actionQueue.enqueueAll(Seq.fill(i)(() => m.Ninja.move(Maze.NORTH)))}
 
   @JSExport
   def look(d:Int):Int = activeMaze match {

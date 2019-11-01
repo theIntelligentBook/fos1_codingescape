@@ -82,7 +82,7 @@ object Stage7 {
             <.button(^.cls := "btn btn-primary", ^.onClick --> run, "Run")
           ),
           <.h4("Password"),
-          <("input")(^.cls := "form-control", ^("type") := "text", ^.on("input") ==> checkPassword)
+          <("input")(^.cls := "form-control", ^.attr("type") := "text", ^.on("input") ==> checkPassword)
         )
       )(
         <.div(

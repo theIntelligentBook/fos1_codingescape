@@ -79,19 +79,19 @@ object Stage0 {
             <("form")(
               <.div(^.cls := "form-group",
                 <("label")("Username *"),
-                <("input")(^("type") := "text", ^.cls := "form-control", ^("required") := "required", ^.on("input") ==> setUser, ^("placeholder") := "The one you logged in with")
+                <("input")(^.attr("type") := "text", ^.cls := "form-control", ^.attr("required") := "required", ^.on("input") ==> setUser, ^.attr("placeholder") := "The one you logged in with")
               ),
               <.div(^.cls := "form-group",
                 <("label")("Names *"),
-                <("textarea")(^("rows") := "2", ^.cls := "form-control", ^("required") := "required", ^.on("input") ==> setNames, ^("placeholder") := "Your real names")
+                <("textarea")(^.attr("rows") := "2", ^.cls := "form-control", ^.attr("required") := "required", ^.on("input") ==> setNames, ^.attr("placeholder") := "Your real names")
               ),
               <.div(^.cls := "form-group",
                 <("label")("School *"),
-                <("input")(^("type") := "text", ^.cls := "form-control", ^("required") := "required", ^.on("input") ==> setSchool, ^("placeholder") := "Your school")
+                <("input")(^.attr("type") := "text", ^.cls := "form-control", ^.attr("required") := "required", ^.on("input") ==> setSchool, ^.attr("placeholder") := "Your school")
               ),
               <.div(^.cls := "form-group",
                 <("label")("Team name"),
-                  <("input")(^("type") := "text", ^.cls := "form-control", ^.on("input") ==> setTeam, ^("placeholder") := "eg, Jumping jellybeans")
+                  <("input")(^.attr("type") := "text", ^.cls := "form-control", ^.on("input") ==> setTeam, ^.attr("placeholder") := "eg, Jumping jellybeans")
               )
             ),
             <.button(^.cls := "btn btn-primary", ^.onClick --> submit, "Save")

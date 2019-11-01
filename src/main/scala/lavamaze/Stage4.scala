@@ -60,7 +60,7 @@ object Stage4 {
               | work, and introduces the canGoDown() and canGoRight() commands. && is "and" and || is "or"
             """.stripMargin
           ),
-          <.pre(
+          <("pre")(
             """
               | if (2 > 1 && canGoRight()) {
               |   down(4)

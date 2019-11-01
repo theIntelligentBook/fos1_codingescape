@@ -41,7 +41,7 @@ object Stage3 {
       split(
         card("Password")(
           <.div(
-            <("input")(^.cls := "form-control", ^("type") := "text", ^.on("input") ==> checkPassword)
+            <("input")(^.cls := "form-control", ^.attr("type") := "text", ^.on("input") ==> checkPassword)
           )
         )
       )(

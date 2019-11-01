@@ -55,11 +55,11 @@ object Stage6 {
         card(
           cardText(
             <.p("We've done the numbering for you. But you've still got some fiddly code to write. (We're here to help!) Let's start by putting our own distance in a variable."),
-            <.pre("let d = ownDistance()"),
+            <("pre")("let d = ownDistance()"),
             <.p(
               "Next, look in each direction. The directions are numbered 0, 1, 2, and 3. If we call look with a direction, it'll give us the distance of that square, or 99 if it's impassable"
             ),
-            <.pre("let r = look(0)"),
+            <("pre")("let r = look(0)"),
             <.p("And what we're looking for is a direction whose value is smaller than ours")
           ),
           cardText(<.p(),

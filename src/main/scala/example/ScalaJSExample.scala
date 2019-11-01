@@ -27,7 +27,7 @@ trait ElementExt extends js.Object {
 
 object ScalaJSExample {
 
-  var root = Attacher.render(<.div(), dom.document.getElementById("render-here"))
+  var root = Attacher.newRoot(dom.document.getElementById("render-here"))
 
   def main(args:Array[String]):Unit = {
     import com.wbillingsley.veautiful._
