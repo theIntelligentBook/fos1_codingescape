@@ -73,7 +73,7 @@ object Stage0 extends Stage {
   def render = {
     logger.debug("Rendering stage 0")
 
-    challengeLayout(number, "It's a lavaly day today")(<.div(
+    challengeLayout(number, "It's a lavaly day today", reachedGoal)(<.div(
       hgutter,
 
       split(

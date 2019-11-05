@@ -53,7 +53,7 @@ object Stage1 extends Stage {
 
     logger.debug(s"Rendering stage 1")
 
-    challengeLayout(1, "Show me an example")(<.div(
+    challengeLayout(1, "Show me an example", reachedGoal)(<.div(
       hgutter,
 
       split(

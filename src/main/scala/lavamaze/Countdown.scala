@@ -27,6 +27,8 @@ object Countdown {
 
   val initial = 45 * 60
 
+  def escaped = Stage8.reachedGoal
+
   def remaining:(Long, Long) = started.map { s =>
     val elapsed = (js.Date.now.toLong - s) / 1000
     val remaining = initial - elapsed
@@ -37,11 +39,24 @@ object Countdown {
   def render = {
     val (h, m) = remaining
 
-    <.div(^.cls := "countdown",
-      <("div", s"$m")(
-        f"$h%02d:$m%02d"
+    if (escaped) {
+      <.div(^.cls := "countdown escaped",
+        <.div("ESCAPED!")
       )
-    )
+    } else {
+      if (h >= 0 && m >= 0) {
+        <.div(^.cls := "countdown",
+          <("div", s"$m")(
+            f"$h%02d:$m%02d"
+          )
+        )
+      } else {
+        <.div(^.cls := "countdown timeout",
+          <.div("TIME!")
+        )
+      }
+    }
+
   }
 
 }

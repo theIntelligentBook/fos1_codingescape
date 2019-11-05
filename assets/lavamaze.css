@@ -170,6 +170,13 @@ a.btn.pulse-link {
     grid-row-start: 1;
 }
 
+.challenge-wrapper .page-controls {
+    grid-column-start: 2;
+    text-align: center;
+    padding: 10px;
+    border-left: 1px solid lightgray;
+}
+
 /*
  * Countdown timer
  */

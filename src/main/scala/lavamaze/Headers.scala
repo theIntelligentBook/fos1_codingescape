@@ -52,12 +52,13 @@ object Headers {
   )
 
 
-  def challengeLayout(i:Int, n:String)(c:VNode) = {
+  def challengeLayout(i:Int, n:String, readyNext: => Boolean)(c:VNode) = {
     <.div(^.cls := "challenge-wrapper",
       <.div(^.cls := "challenge-header", stageHeader(i, n)),
       <.div(^.cls := "challenge", c),
       <.div(^.cls := "countdown-box", Countdown.render),
-      <.div(^.cls := "stage-progress", Stage.progressBlock)
+      <.div(^.cls := "stage-progress", Stage.progressBlock),
+      <.div(^.cls := "page-controls", Stage.pageControls(readyNext))
     )
   }
 

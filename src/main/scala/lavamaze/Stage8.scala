@@ -31,7 +31,7 @@ object Stage8 extends Stage {
   }
 
   def render = {
-    challengeLayout(number, name)(<.div(
+    challengeLayout(number, name, false)(<.div(
       hgutter,
 
       split(
