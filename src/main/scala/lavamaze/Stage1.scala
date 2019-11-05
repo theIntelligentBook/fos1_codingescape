@@ -1,5 +1,6 @@
 package lavamaze
 
+import com.wbillingsley.veautiful.logging.Logger
 import com.wbillingsley.veautiful.{<, ^}
 import example.ScalaJSExample
 
@@ -8,11 +9,17 @@ import scala.scalajs.js
 object Stage1 extends Stage {
   import Headers._
 
+  val logger:Logger = Logger.getLogger(Stage1.getClass)
+
   val editor = new CodeEditor(text = "", rows=8, disabled=true)
 
   var reachedGoal = false
 
   val code = "0000"
+
+  override val number = 1
+
+  override val name = "By example"
 
   val maze:Maze = new Maze("Stage 1", onGoal = () => {
     reachedGoal = true
@@ -44,10 +51,9 @@ object Stage1 extends Stage {
 
   def render = {
 
-    println(s"Rendering stage 1")
+    logger.debug(s"Rendering stage 1")
 
-    <.div(
-      stageHeader(1, "Show me an example"),
+    challengeLayout(1, "Show me an example")(<.div(
       hgutter,
 
       split(
@@ -85,7 +91,7 @@ object Stage1 extends Stage {
         )
       } else <.div(),
       Stage.pageControls(reachedGoal)
-    )
+    ))
 
   }
 

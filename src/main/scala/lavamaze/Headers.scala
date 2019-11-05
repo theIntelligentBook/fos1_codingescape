@@ -51,4 +51,15 @@ object Headers {
     )
   )
 
+
+  def challengeLayout(i:Int, n:String)(c:VNode) = {
+    <.div(^.cls := "challenge-wrapper",
+      <.div(^.cls := "challenge-header", stageHeader(i, n)),
+      <.div(^.cls := "challenge", c),
+      <.div(^.cls := "countdown-box", Countdown.render),
+      <.div(^.cls := "stage-progress", Stage.progressBlock)
+    )
+  }
+
+
 }

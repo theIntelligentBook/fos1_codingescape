@@ -1,18 +1,24 @@
 package lavamaze
 
+import com.wbillingsley.veautiful.logging.Logger
 import com.wbillingsley.veautiful.{<, ^}
 import org.scalajs.dom
 import org.scalajs.dom.raw.{HTMLInputElement, HTMLTextAreaElement}
 
 import scala.concurrent.Future
 import scala.scalajs.js
-
 import scala.concurrent.ExecutionContext.Implicits.global
 
 object Stage0 extends Stage {
   import Headers._
 
+  val logger:Logger = Logger.getLogger(Stage0.getClass)
+
+
   var reachedGoal = false
+  val code = "0000"
+  val number = 0
+  val name = "Who are you?"
 
   var team:String = ""
   var names:String = ""
@@ -57,7 +63,7 @@ object Stage0 extends Stage {
         }
         .foreach { _ =>
           reachedGoal = true
-          Routing.afterAttach()
+          Routing.rerender()
         }
     }
 
@@ -65,11 +71,9 @@ object Stage0 extends Stage {
 
 
   def render = {
+    logger.debug("Rendering stage 0")
 
-    println(s"Rendering stage 0")
-
-    <.div(
-      stageHeader(0, "It's a lavaly day today"),
+    challengeLayout(number, "It's a lavaly day today")(<.div(
       hgutter,
 
       split(
@@ -111,12 +115,8 @@ object Stage0 extends Stage {
         )
       )
 
-    )
+    ))
 
-  }
-
-  def next(): Unit = {
-    Routing.routeTo(StageR(2))
   }
 
 }

@@ -11,6 +11,8 @@ object Stage3 extends Stage {
 
   var reachedGoal = false
   val code = "+0110"
+  val number = 3
+  val name = "Cards of Doom"
 
   val maze:Maze = new Maze("Stage 2", onGoal = () => {
     reachedGoal = true
@@ -32,10 +34,7 @@ object Stage3 extends Stage {
 
   def render = {
 
-    println(s"Rendering stage 3")
-
-    <.div(
-      stageHeader(3, "Cards of Doom!"),
+    challengeLayout(number, name)(<.div(
       hgutter,
 
       split(
@@ -66,18 +65,12 @@ object Stage3 extends Stage {
       if (reachedGoal) {
         <.div(
           <.p(^.cls := "congrats", s"Code: $code"),
-          <.p("Cards of Doom champion!"),
-          <("div", "stage3")(^.cls := "btn-group",
-            <.button(^.cls := "btn btn-outline-secondary", ^.onClick --> prev, "Stage 2"),
-            <.button(^.cls := "btn btn-outline-primary", ^.onClick --> next, "Stage 4")
-          )
+          <.p("Cards of Doom champion!")
         )
-      } else <("div", "stage3")(^.cls := "btn-group",
-        <.button(^.cls := "btn btn-outline-secondary", ^.onClick --> prev, "Stage 2"),
-        <.button(^.cls := "btn btn-outline-light", ^.onClick --> next, "Stage 4")
-      )
+      } else <.div(),
+      Stage.pageControls(reachedGoal)
 
-    )
+    ))
 
   }
 

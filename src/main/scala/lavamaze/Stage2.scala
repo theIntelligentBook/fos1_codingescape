@@ -1,5 +1,6 @@
 package lavamaze
 
+import com.wbillingsley.veautiful.logging.Logger
 import com.wbillingsley.veautiful.{<, ^}
 
 import scala.scalajs.js
@@ -7,10 +8,15 @@ import scala.scalajs.js
 object Stage2 extends Stage {
   import Headers._
 
+  val logger:Logger = Logger.getLogger(Stage2.getClass)
+
+
   val editor = new CodeEditor(text = "", rows=8, disabled=false)
 
   var reachedGoal = false
   val code = "+0010"
+  val number = 2
+  val name = "Blocks"
 
   val maze:Maze = new Maze("Stage 2", onGoal = () => {
     reachedGoal = true
@@ -39,10 +45,9 @@ object Stage2 extends Stage {
 
   def render = {
 
-    println(s"Rendering stage 2")
+    logger.debug(s"Rendering stage 2")
 
-    <.div(
-      stageHeader(2, "Now you write it"),
+    challengeLayout(number, name)(<.div(
       hgutter,
 
       split(
@@ -69,18 +74,12 @@ object Stage2 extends Stage {
       if (reachedGoal) {
         <.div(
           <.p(^.cls := "congrats", s"Code: $code"),
-          <.p("Well done. But I wouldn't want to rewrite my code for every maze. Time to move on..."),
-          <("div", "stage2")(^.cls := "btn-group",
-            <.button(^.cls := "btn btn-outline-secondary", ^.onClick --> prev, "Stage 1"),
-            <.button(^.cls := "btn btn-outline-primary", ^.onClick --> next, "Stage 3")
-          )
-        )
-      } else <("div", "stage2")(^.cls := "btn-group",
-        <.button(^.cls := "btn btn-outline-secondary", ^.onClick --> prev, "Stage 1"),
-        <.button(^.cls := "btn btn-outline-light", ^.onClick --> next, "Stage 3")
-      )
+          <.p("Well done. But I wouldn't want to rewrite my code for every maze. Time to move on...")
 
-    )
+        )
+      } else <.div(),
+      Stage.pageControls(reachedGoal)
+    ))
 
   }
 

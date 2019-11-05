@@ -8,6 +8,9 @@ object Stage8 extends Stage {
   import Headers._
 
   var reachedGoal = false
+  val code = "ESCAPED!"
+  val number = 8
+  val name = "Final conundrum"
 
   val maze:Maze = new Maze("Stage 8", onGoal = () => {
     reachedGoal = true
@@ -28,11 +31,7 @@ object Stage8 extends Stage {
   }
 
   def render = {
-
-    println(s"Rendering stage 3")
-
-    <.div(
-      stageHeader(8, "With our complements"),
+    challengeLayout(number, name)(<.div(
       hgutter,
 
       split(
@@ -79,16 +78,11 @@ object Stage8 extends Stage {
       if (reachedGoal) {
         <.div(
           <.p(^.cls := "congrats", "ESCAPED! ESCAPED! ESCAPED!"),
-          <.p("Congratulations, coding ninja!"),
-          <("div", "stage3")(^.cls := "btn-group",
-            <.button(^.cls := "btn btn-outline-secondary", ^.onClick --> prev, "Stage 7")
-          )
+          <.p("Congratulations, coding ninja!")
         )
-      } else <("div", "stage3")(^.cls := "btn-group",
-        <.button(^.cls := "btn btn-outline-secondary", ^.onClick --> prev, "Stage 7")
-      )
-
-    )
+      } else <.div(),
+      Stage.pageControls(false)
+    ))
 
   }
 

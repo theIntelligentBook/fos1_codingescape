@@ -11,6 +11,8 @@ object Stage4 extends Stage {
 
   var reachedGoal = false
   val code = "+0001"
+  val number = 4
+  val name = "If only..."
 
   val maze:Maze = new Maze("Stage 4",
     defaultAction = () => {
@@ -45,10 +47,7 @@ object Stage4 extends Stage {
 
   def render = {
 
-    println(s"Rendering stage 4")
-
-    <.div(
-      stageHeader(4, "If only..."),
+    challengeLayout(number, name)(<.div(
       hgutter,
 
       split(
@@ -85,20 +84,14 @@ object Stage4 extends Stage {
           if (reachedGoal) {
             <.div(
               <.p(^.cls := "congrats", s"Code: $code"),
-              <.p("Well that was down-right trivial! But you know we're going to spoil the party in the next stage..."),
-              <("div", "stage2")(^.cls := "btn-group",
-                <.button(^.cls := "btn btn-outline-secondary", ^.onClick --> prev, "Stage 3"),
-                <.button(^.cls := "btn btn-outline-primary", ^.onClick --> next, "Stage 5")
-              )
+              <.p("Well that was down-right trivial! But you know we're going to spoil the party in the next stage...")
             )
-          } else <("div", "stage2")(^.cls := "btn-group",
-            <.button(^.cls := "btn btn-outline-secondary", ^.onClick --> prev, "Stage 3"),
-            <.button(^.cls := "btn btn-outline-light", ^.onClick --> next, "Stage 5")
-          )
+          } else <.div(),
+          Stage.pageControls(reachedGoal)
         )
 
       )
-    )
+    ))
 
   }
 

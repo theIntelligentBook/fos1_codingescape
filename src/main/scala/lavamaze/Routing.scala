@@ -44,8 +44,13 @@ object Routing extends HistoryRouter[Route] {
 
   def render:VNode = route match {
     case HomeRoute => deck
-    case StageR(i) => deckPage(i)
+    case StageR(i) => {
+      if (i == 1) Countdown.start()
+      deckPage(i)
+    }
   }
+
+  def rerender() = renderElements(render)
 
   override def path(route: Route): String = {
     import PathDSL._

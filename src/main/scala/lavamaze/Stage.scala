@@ -5,6 +5,14 @@ import com.wbillingsley.veautiful.templates.SequenceItem
 
 trait Stage extends DiffComponent {
 
+  def reachedGoal:Boolean
+
+  def code:String
+
+  def number:Int
+
+  def name:String
+
 }
 
 object Stage {
@@ -13,11 +21,14 @@ object Stage {
     Stage0, Stage1, Stage2, Stage3, Stage4, Stage5, Stage6, Stage7, Stage8
   )
 
+  val sequence = Seq(
+    TitleCard, Stage0, Stage1, Stage2, Stage3, Stage4, Stage5, Stage6, Stage7, Stage8
+  )
+
   val slideNodes:Seq[SequenceItem] = {
-    new SequenceItem(TitleCard, showFootBox = () => false) +: all.map { n =>
+    sequence.map { n =>
       new SequenceItem(n, showFootBox = () => false)
     }
-
   }
 
 
@@ -55,6 +66,35 @@ object Stage {
     }
   }
 
+  def stageActive(s:Stage):Boolean = {
+    Routing.deck.content(Routing.deck.index).content == s
+  }
+
+
+  def progressLine(s:Stage) = {
+    <.div(^.cls := (if (stageActive(s)) "stage stage-active" else "stage"),
+      <.div(^.cls := "stage-progress-label",
+        <.span(^.cls := "stagenumber", s.number.toString),
+        <.span(<.span(^.cls := "stagename", s.name))
+      ),
+      if (s.reachedGoal) {
+        <.div(^.cls := "stage-code", s.code)
+      } else {
+        <.div(^.cls := "stage-locked", "UNSOLVED")
+      }
+
+    )
+  }
+
+  def progressBlock = {
+    import Headers._
+
+    <.div(
+      for { s <- all } yield {
+        progressLine(s)
+      }
+    )
+  }
 
 
 }
