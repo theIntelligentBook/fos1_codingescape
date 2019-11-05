@@ -1,41 +1,60 @@
 package lavamaze
 
-import com.wbillingsley.veautiful.{<, DElement, ElementComponent, VNode}
+import com.wbillingsley.veautiful.templates.{HistoryRouter, VSlides}
+import com.wbillingsley.veautiful.{<, DElement, ElementComponent, PathDSL, VNode}
 
-object Routing extends ElementComponent(<.div()) {
+sealed trait Route
+case object HomeRoute extends Route
+case class StageR(i:Int) extends Route
 
-  sealed trait Route
-  case object HomeRoute extends Route
-  case object Stage1R extends Route
-  case object Stage2R extends Route
-  case object Stage3R extends Route
-  case object Stage4R extends Route
-  case object Stage5R extends Route
-  case object Stage6R extends Route
-  case object Stage7R extends Route
-  case object Stage8R extends Route
+object Routing extends HistoryRouter[Route] {
 
   var route:Route = HomeRoute
 
-  def routeTo(r:Route) = {
-    route = r
-    renderElements(render)
+  def parseInt(s:String, or:Int):Int = {
+    try {
+      s.toInt
+    } catch {
+      case n:NumberFormatException => or
+    }
   }
+
+  override def routeFromLocation(): Route = PathDSL.hashPathArray() match {
+    case Array("") => HomeRoute
+    case Array(i) => StageR(parseInt(i, 0))
+    case x =>
+      println(s"path was ${x}")
+      HomeRoute
+  }
+
+  val deck = VSlides(width = 1920, height = 1080)(
+    Stage.slideNodes
+  )
+
+  def deckPage(i:Int) = {
+    if (i >= 0 && i < deck.content.size) {
+      deck.index = i
+      deck
+    } else {
+      deck.index = 0
+      deck
+    }
+  }
+
 
   def render:VNode = route match {
-    case HomeRoute => Stage0.node
-    case Stage1R => Stage1.node
-    case Stage2R => Stage2.node
-    case Stage3R => Stage3.node
-    case Stage4R => Stage4.node
-    case Stage5R => Stage5.node
-    case Stage6R => Stage6.node
-    case Stage7R => Stage7.node
-    case Stage8R => Stage8.node
+    case HomeRoute => deck
+    case StageR(i) => deckPage(i)
   }
 
-  override def afterAttach() = {
-    renderElements(render)
+  override def path(route: Route): String = {
+    import PathDSL._
+
+    route match {
+      case HomeRoute =>(/# / "").stringify
+      case StageR(i) => (/# / i.toString).stringify
+    }
+
   }
 
 }

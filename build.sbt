@@ -16,6 +16,8 @@ testFrameworks += new TestFramework("utest.runner.Framework")
 libraryDependencies ++= Seq(
   "com.github.wbillingsley.handy" %%% "handy" % "master-SNAPSHOT",
   "com.github.wbillingsley.veautiful" %%% "veautiful" % "master-SNAPSHOT",
+  "com.github.wbillingsley.veautiful" %%% "scatter" % "master-SNAPSHOT",
+  "com.github.wbillingsley.veautiful" %%% "veautiful-templates" % "master-SNAPSHOT",
   "com.lihaoyi" %%% "upickle" % "0.8.0",
   "org.scala-js" %%% "scalajs-dom" % "0.9.7",
   "org.scalatest" %%% "scalatest" % "3.0.8" % "test"

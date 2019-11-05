@@ -4,7 +4,7 @@ import com.wbillingsley.veautiful.{<, ^}
 import org.scalajs.dom
 import org.scalajs.dom.raw.HTMLInputElement
 
-object Stage8 {
+object Stage8 extends Stage {
   import Headers._
 
   var reachedGoal = false
@@ -27,7 +27,7 @@ object Stage8 {
     }
   }
 
-  def node() = {
+  def render = {
 
     println(s"Rendering stage 3")
 
@@ -93,7 +93,7 @@ object Stage8 {
   }
 
   def prev(): Unit = {
-    Routing.routeTo(Routing.Stage7R)
+    Routing.routeTo(StageR(7))
   }
 
 }

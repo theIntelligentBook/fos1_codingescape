@@ -9,7 +9,7 @@ import scala.scalajs.js
 
 import scala.concurrent.ExecutionContext.Implicits.global
 
-object Stage0 {
+object Stage0 extends Stage {
   import Headers._
 
   var reachedGoal = false
@@ -64,7 +64,7 @@ object Stage0 {
   }
 
 
-  def node() = {
+  def render = {
 
     println(s"Rendering stage 0")
 
@@ -104,12 +104,10 @@ object Stage0 {
               <.p(^.cls := "congrats", s"Welcome, $team"),
               <.p("Time to get coding..."),
               <("div", "stage0")(^.cls := "btn-group",
-                <.button(^.cls := "btn btn-outline-primary", ^.onClick --> Routing.routeTo(Routing.Stage1R), "Stage 1")
+                Stage.readyNextLink
               )
             )
-          } else <("div", "stage0")(^.cls := "btn-group",
-            <.button(^.cls := "btn btn-outline-light", ^.onClick --> next, "Stage 1")
-          )
+          } else Stage.hiddenNextLink
         )
       )
 
@@ -118,7 +116,7 @@ object Stage0 {
   }
 
   def next(): Unit = {
-    Routing.routeTo(Routing.Stage2R)
+    Routing.routeTo(StageR(2))
   }
 
 }

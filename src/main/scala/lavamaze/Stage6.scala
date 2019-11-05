@@ -4,7 +4,7 @@ import com.wbillingsley.veautiful.{<, ^}
 
 import scala.scalajs.js
 
-object Stage6 {
+object Stage6 extends Stage {
   import Headers._
 
   val editor = new CodeEditor(text = "", rows=8, disabled=false)
@@ -43,7 +43,7 @@ object Stage6 {
     maze.Ninja.action = Idle
   }
 
-  def node() = {
+  def render = {
 
     println(s"Rendering stage 4")
 
@@ -96,10 +96,10 @@ object Stage6 {
   }
 
   def prev(): Unit = {
-    Routing.routeTo(Routing.Stage5R)
+    Routing.routeTo(StageR(5))
   }
 
   def next(): Unit = {
-    Routing.routeTo(Routing.Stage7R)
+    Routing.routeTo(StageR(7))
   }
 }

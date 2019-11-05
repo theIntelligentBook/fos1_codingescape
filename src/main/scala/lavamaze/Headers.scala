@@ -7,14 +7,12 @@ import org.scalajs.dom.raw.HTMLTextAreaElement
 object Headers {
 
   def stageHeader(stage:Int, name:String):VNode = {
-    <.div(^.cls := "row",
-      <.div(^.cls := "col",
-        <.div(^.cls := "media",
-          <.img(^.cls := "stageninja", ^.src := "assets/ninja.png"),
-          <.span(^.cls := "stagenumber", stage.toString),
-          <.div(^.cls := "media-body",
-            <.div(<.span(^.cls := "stageheader", name))
-          )
+    <.div(^.cls := "stage-header",
+      <.div(^.cls := "media",
+        <.img(^.cls := "stageninja", ^.src := "assets/ninja.png"),
+        <.span(^.cls := "stagenumber", stage.toString),
+        <.div(^.cls := "media-body",
+          <.div(<.span(^.cls := "stagename", name))
         )
       )
     )

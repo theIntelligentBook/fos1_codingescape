@@ -5,7 +5,7 @@ import example.ScalaJSExample
 
 import scala.scalajs.js
 
-object Stage1 {
+object Stage1 extends Stage {
   import Headers._
 
   val editor = new CodeEditor(text = "", rows=8, disabled=true)
@@ -42,7 +42,7 @@ object Stage1 {
     maze.Ninja.action = Idle
   }
 
-  def node() = {
+  def render = {
 
     println(s"Rendering stage 1")
 
@@ -81,23 +81,16 @@ object Stage1 {
       if (reachedGoal) {
         <.div(
           <.p(^.cls := "congrats", s"Code: $code"),
-          <.p("You've reached the goal. Click the run button to see it run your script. And before you move on, copy and paste the text."),
-          <("div", "stage1")(^.cls := "btn-group",
-            <.button(^.cls := "btn btn-outline-secondary", ^.onClick --> next, "Stage 0"),
-            <.button(^.cls := "btn btn-outline-primary", ^.onClick --> Routing.routeTo(Routing.Stage2R), "Stage 2")
-          )
+          <.p("You've reached the goal. Click the run button to see it run your script. And before you move on, copy and paste the text.")
         )
-      } else <("div", "stage1")(^.cls := "btn-group",
-        <.button(^.cls := "btn btn-outline-secondary", ^.onClick --> next, "Stage 0"),
-        <.button(^.cls := "btn btn-outline-light", ^.onClick --> next, "Stage 2")
-      )
-
+      } else <.div(),
+      Stage.pageControls(reachedGoal)
     )
 
   }
 
   def next(): Unit = {
-    Routing.routeTo(Routing.Stage2R)
+    Routing.routeTo(StageR(2))
   }
 
   def tryDown() = {

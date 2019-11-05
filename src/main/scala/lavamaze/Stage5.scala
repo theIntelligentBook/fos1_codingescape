@@ -7,7 +7,7 @@ import org.scalajs.dom.raw.HTMLInputElement
 
 import scala.scalajs.js
 
-object Stage5 {
+object Stage5 extends Stage {
   import Headers._
 
   val editor = new CodeEditor(text =
@@ -50,7 +50,7 @@ object Stage5 {
     }
   }
 
-  def node() = {
+  def render = {
 
     println(s"Rendering stage 3")
 
@@ -110,10 +110,10 @@ object Stage5 {
   }
 
   def prev(): Unit = {
-    Routing.routeTo(Routing.Stage4R)
+    Routing.routeTo(StageR(4))
   }
 
   def next(): Unit = {
-    Routing.routeTo(Routing.Stage6R)
+    Routing.routeTo(StageR(6))
   }
 }
