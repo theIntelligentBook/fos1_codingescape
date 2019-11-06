@@ -31,3 +31,29 @@ class DeleteTile (tileSpace:TileSpace[JSExpr], cls:String = "btn btn-danger") ex
     println("Undo")
   }
 }
+
+case class LessThan(left:JSExpr, right: JSExpr) extends JSExpr {
+  override def toJS(indent: Int): String = {
+    s"${left.toJS(indent)} < ${right.toJS(indent) }"
+  }
+}
+
+class LessThanTile(tileSpace:TileSpace[JSExpr], override val returnType:String = "Boolean") extends Tile(tileSpace) {
+
+  val left = new Socket[JSExpr](this, acceptType = Some("Number"))
+  val right = new Socket[JSExpr](this, acceptType = Some("Number"))
+
+  override val tileContent = {
+    HBox(
+      left,
+      TileText[JSExpr](" < "),
+      right
+    )
+  }
+
+  override def toLanguage: JSExpr = LessThan(
+    left.content.map(_.toLanguage).getOrElse(JSBlank),
+    right.content.map(_.toLanguage).getOrElse(JSBlank)
+  )
+
+}

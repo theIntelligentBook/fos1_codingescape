@@ -251,6 +251,7 @@ video.scatter-video {
     width: -moz-fit-content;
     width: fit-content;
     overflow-y: scroll;
+    height: 450px;
 }
 
 .error-message {

@@ -62,7 +62,7 @@ object Stage8 extends Stage {
                 if (StageSpoilerPaths.reachedGoal) StageSpoilerPaths.code else "(undiscovered)"
               ),
               <("pre")(
-                if (Stage6.reachedGoal) Stage6.code else "(undiscovered)"
+                if (StageCountdown.reachedGoal) StageCountdown.code else "(undiscovered)"
               ),
               <("pre")(
                 if (Stage7.reachedGoal) Stage7.code else "(undiscovered)"

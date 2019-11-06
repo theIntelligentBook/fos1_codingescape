@@ -34,20 +34,17 @@ object StageJellyFlood extends Stage {
           <.h2("Flood fill algorithm"),
           <.p(
             """
-              | In this puzzle, you're the algorithm!.
-              |""".stripMargin),
-          <.p(
-            """
               | Imagine someone is pouring molten jelly on the goal square and it flows out at one square per turn.
               |""".stripMargin),
           <.p("After zero turns, it's just on the goal square."),
           <.p("After 1 turn, it'd move to the neighbouring squares."),
           <.p("After 2 turns, it'd move to their neighbours."),
-          <.p("Let's animate our jelly flood!"),
+          <.p("Let's animate our jelly flood! Use the controls on the right"),
           if (reachedGoal) {
             <.div(
               <.p(^.cls := "congrats", s"Code: $code"),
-              <.p("Now all our ninja needs to think about is ", <("i")("'Which way will the jelly reach me from first?'"))
+              <.p("Now all our ninja needs to think about is ", <("i")("'Which way will the jelly reach me from first?'")),
+              <.p("So long as we keep moving to lower-numbered squares, we should reach the goal")
             )
           } else {
             <.div()
