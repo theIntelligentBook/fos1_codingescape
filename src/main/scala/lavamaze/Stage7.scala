@@ -1,7 +1,7 @@
 package lavamaze
 
 import com.wbillingsley.veautiful.{<, ^}
-import lavamaze.Stage5.reachedGoal
+import lavamaze.StageSpoilerPaths.reachedGoal
 import org.scalajs.dom
 import org.scalajs.dom.Event
 import org.scalajs.dom.raw.HTMLInputElement

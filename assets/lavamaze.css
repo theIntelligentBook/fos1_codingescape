@@ -105,6 +105,7 @@ h1, h2, h3, h4 {
     }
 }
 
+
 /*
  * Stage headers
  */
@@ -297,4 +298,59 @@ video.scatter-video {
 
 .cod-deck {
     min-height: 400px;
+}
+
+.jelly-cell {
+    width: 60px;
+    height: 60px;
+    border: 1px solid lightgray;
+}
+
+.jelly-grid .jelly-row {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+}
+
+.jelly-cell .floor {
+    background-color: #242424;
+    width: 100%;
+    height: 100%;
+}
+
+.jelly-cell .lava {
+    background-color: darkred;
+    width: 100%;
+    height: 100%;
+}
+
+.jelly-cell .jelly {
+    background-color: darkgreen;
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+    color: white;
+    text-align: center;
+    line-height: 60px;
+}
+
+.jelly-cell .jelly.active {
+    animation: pulse-jelly 2s infinite;
+}
+
+
+@keyframes pulse-jelly {
+    0% {
+        opacity: 1;
+        border-radius: 5px;
+    }
+
+    70% {
+        opacity: 0.6;
+        border-radius: 20px;
+    }
+
+    100% {
+        opacity: 1;
+        border-radius: 5px;
+    }
 }

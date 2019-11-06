@@ -312,12 +312,14 @@ class Maze(name:String, val w:Int = 8, val h:Int = 6, var defaultAction: () => A
     bindCode(code)()
   }
 
-  def setActionAlgorithm(code:String):Unit = {
+  def setActionAlgorithm(code:String, before:() => Unit = () => {}):Unit = {
     Ninja.reset()
     actionQueue.dequeueAll(_ => true)
+    val bound = bindCode(code)
 
     defaultAction = () => {
-      bindCode(code)()
+      before()
+      bound()
       Idle
     }
   }

@@ -7,32 +7,40 @@ import org.scalajs.dom.raw.HTMLInputElement
 
 import scala.scalajs.js
 
-object Stage5 extends Stage {
+object StageSpoilerPaths extends Stage {
   import Headers._
 
   val editor = new CodeEditor(text =
     """
       |if (canGoRight()) {
       |  right(1)
-      |} else down(1)
+      |} else if (canGoDown()) {
+      |  down(1)
+      |}
     """.stripMargin, rows=8, disabled=true)
 
   var reachedGoal = false
   val code = "invert!"
-  val number = 5
+  val number = 6
   val name = "Downright annoying"
 
-  val maze:Maze = new Maze("Stage 5",
-    defaultAction = () => {
-      //js.eval(editor.getText)
-      Idle
-    }
-  )
+  val maze:Maze = new Maze("Stage 5")
 
   maze.makeSpoilerPath()
 
+  var moveCount = 0
+
   val run: (Event) => Unit = { x =>
-    maze.runCode(editor.getText)
+    maze.setActionAlgorithm(editor.getText, before = () => {
+      if (moveCount < 100) {
+        moveCount = moveCount + 1
+      } else {
+        if (!reachedGoal) {
+          reachedGoal = true
+          rerender()
+        }
+      }
+    })
   }
 
 
@@ -52,7 +60,11 @@ object Stage5 extends Stage {
       hgutter,
 
       split(
-        <.div(
+        textColumn(
+          <.h2("Spoilers!"),
+          <.p("Just going down and right's all well and good until you hit a dead-end."),
+          <.p("Run this algorithm and see that it gets stuck."),
+
           card(
             <.div(
               cardText(
@@ -61,33 +73,23 @@ object Stage5 extends Stage {
               ),
               cardText(<.p(),
                 <.button(^.cls := "btn btn-primary", ^.onClick ==> run, "Run")
-              ),
-              <.h4("Password"),
-              <("input")(^.cls := "form-control", ^.attr("type") := "text", ^.on("input") ==> checkPassword)
+              )
             )
           ),
           hgutter,
           if (reachedGoal) {
             <.div(
               <.p(^.cls := "congrats", s"Code: $code"),
-              <.p("Poster posted, on to try it out...")
+              <.p("Yes, the ninja's got stuck in a dead-end. If we want a more foolproof algorithm than that, we'll need to introduce some AI!")
             )
           } else <.div(),
           Stage.pageControls(reachedGoal)
         )
       )(
-        card("Spoiler alert!")(
-          cardText(
-            <.div(
-              <.p("Just going down and right's all well and good until you hit a dead-end."),
-              <.div(maze),
-              <.p(
-                "If we want a more foolproof algorithm, we're going to need to do a bit more work than that. Let's talk this one through on the poster."
-              ),
-              <.p(
-                "So, first things first: CLAP YOUR HANDS so we know you're up to this stage and ready."
-              )
-            )
+        textColumn(
+          <.div(^.cls := "split2 split-top-right",
+            <.div(),
+            <.div(maze)
           )
         )
       )

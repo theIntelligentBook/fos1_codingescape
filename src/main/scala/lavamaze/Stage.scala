@@ -21,12 +21,13 @@ object Stage {
   val logger:Logger = Logger.getLogger(Stage.getClass)
 
   val all = Seq(
-    Stage0, Stage1, StageBlocks, Stage2, StageCardsOfDoom, StageIf, Stage5, Stage6, Stage7, Stage8
+    Stage0, Stage1, StageBlocks, Stage2, StageCardsOfDoom, StageIf, StageSpoilerPaths, StageJellyFlood, Stage6, Stage7, Stage8
   )
 
   val sequence = Seq(
-    TitleCard, Stage0, Stage1, StageBlocks, Stage2, StageCardsOfDoom, StageIf, Stage5, Stage6, Stage7, Stage8
+    TitleCard, Stage0, Stage1, StageBlocks, Stage2, StageCardsOfDoom, StageIf, StageSpoilerPaths, StageJellyFlood, Stage6, Stage7, Stage8
   )
+
 
   val slideNodes:Seq[SequenceItem] = {
     sequence.map { n =>
