@@ -65,7 +65,7 @@ object Stage8 extends Stage {
                 if (StageCountdown.reachedGoal) StageCountdown.code else "(undiscovered)"
               ),
               <("pre")(
-                if (Stage7.reachedGoal) Stage7.code else "(undiscovered)"
+                if (StageBlobs.reachedGoal) StageBlobs.code else "(undiscovered)"
               ),
               <("pre")(
                 "answer, in decimals"

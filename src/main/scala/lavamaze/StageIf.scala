@@ -21,7 +21,7 @@ object StageIf extends Stage {
   val name = "If only..."
 
   @JSExport
-  val scatterCanvas = new TileSpace(Some("example"), JSLang)((512, 384))
+  val scatterCanvas = new TileSpace(Some("example"), JSLang)((512, 640))
   val pt = new WhenTile(scatterCanvas, "When a new action is needed")
   pt.x = 2
   pt.y = 2
@@ -61,7 +61,7 @@ object StageIf extends Stage {
   }
 
 
-  val maze:Maze = new Maze("Stage 4",
+  val maze:Maze = new Maze("StageIf",
     defaultAction = () => {
       //js.eval(editor.getText)
       Idle

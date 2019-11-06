@@ -21,11 +21,11 @@ object Stage {
   val logger:Logger = Logger.getLogger(Stage.getClass)
 
   val all = Seq(
-    Stage0, Stage1, StageBlocks, Stage2, StageCardsOfDoom, StageIf, StageSpoilerPaths, StageJellyFlood, StageCountdown, Stage7, Stage8
+    Stage0, Stage1, StageBlocks, Stage2, StageCardsOfDoom, StageIf, StageSpoilerPaths, StageJellyFlood, StageCountdown, StageBlobs, Stage8
   )
 
   val sequence = Seq(
-    TitleCard, Stage0, Stage1, StageBlocks, Stage2, StageCardsOfDoom, StageIf, StageSpoilerPaths, StageJellyFlood, StageCountdown, Stage7, Stage8
+    TitleCard, Stage0, Stage1, StageBlocks, Stage2, StageCardsOfDoom, StageIf, StageSpoilerPaths, StageJellyFlood, StageCountdown, StageBlobs, Stage8
   )
 
 

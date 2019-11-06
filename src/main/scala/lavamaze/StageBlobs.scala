@@ -8,11 +8,11 @@ import org.scalajs.dom.raw.HTMLInputElement
 
 import scala.scalajs.js
 
-object Stage7 extends Stage {
+object StageBlobs extends Stage {
   import Headers._
 
   val editor = new CodeEditor(text =
-    """let d = ownDistance()
+    """let d = lookHere()
       |if (look(0) < d) {
       |  right(1)
       |} else if (look(1) < d) {
@@ -22,18 +22,18 @@ object Stage7 extends Stage {
       |} else if (look(3) < d) {
       |  up(1)
       |}
-    """.stripMargin, rows=8, disabled=true)
+    """.stripMargin, rows=10, disabled=true)
 
   var reachedGoal = false
   val code = "+0001"
-  val number = 7
+  val number = 9
   val name = "Enter the Blobs"
 
   val maze:Maze = new Maze("Stage 7",
     w = 12, h = 8,
-    defaultAction = () => {
-// TODO: FIX      js.eval(editor.getText)
-      Idle
+    onGoal = () => {
+      reachedGoal = true
+      Routing.rerender()
     }
   )
 
@@ -44,7 +44,7 @@ object Stage7 extends Stage {
   maze.createBlobs(2)
 
   val run: (Event) => Unit = { x =>
-    maze.runCode(editor.getText)
+    maze.setActionAlgorithm(editor.getText)
   }
 
   def checkPassword(e:dom.Event): Unit = {
@@ -63,24 +63,16 @@ object Stage7 extends Stage {
       hgutter,
 
       split(
-        card("Escapology")(
-          cardText(
-            <.p("The Blob Guards have arrived... how can we escape without running into a blob?"),
-            <.p("Here's our little attempt, but let's chat about alternatives. CLAP to let us know you're up to this stage.")
-          ),
+        textColumn(
+          <.h2("Escapology"),
+          <.p("The Blob Guards have arrived... how can we escape without running into a blob?"),
+          <.p("The algorithm on this page won't always make it. All it's doing is deciding that jelly can't flow through blobs when it's numbering the squares"),
+          <.p("Give it a few runs and see if it reaches the exit."),
           cardText(<.p(),
             editor
           ),
           cardText(<.p(),
             <.button(^.cls := "btn btn-primary", ^.onClick ==> run, "Run")
-          ),
-          <.h4("Password"),
-          <("input")(^.cls := "form-control", ^.attr("type") := "text", ^.on("input") ==> checkPassword)
-        )
-      )(
-        <.div(
-          card(
-            maze
           ),
           hgutter,
           if (reachedGoal) {
@@ -90,6 +82,13 @@ object Stage7 extends Stage {
             )
           } else <.div(),
           Stage.pageControls(reachedGoal)
+        )
+      )(
+        textColumn(
+          <.div(^.cls := "split2 split-top-right",
+            <.div(),
+            maze
+          ),
         )
 
       )

@@ -37,7 +37,7 @@ object StageBlocks extends Stage {
   }
 
   @JSExport
-  val scatterCanvas = new TileSpace(Some("example"), JSLang)((512, 384))
+  val scatterCanvas = new TileSpace(Some("example"), JSLang)((512, 640))
   val pt = new ProgramTile(scatterCanvas, <.button(^.cls := "btn btn-sm btn-primary", ^.onClick --> run(), "Run"))
   pt.x = 2
   pt.y = 2
