@@ -306,18 +306,14 @@ class Maze(name:String, val w:Int = 8, val h:Int = 6, var defaultAction: () => A
    * Executes a dynamic script on this maze
    */
   def runCode(code:String):Unit = {
-    Ninja.x = 0
-    Ninja.y = 0
-    Ninja.action = Idle
+    Ninja.reset()
     actionQueue.dequeueAll(_ => true)
 
     bindCode(code)()
   }
 
   def setActionAlgorithm(code:String):Unit = {
-    Ninja.x = 0
-    Ninja.y = 0
-    Ninja.action = Idle
+    Ninja.reset()
     actionQueue.dequeueAll(_ => true)
 
     defaultAction = () => {
@@ -333,6 +329,26 @@ class Maze(name:String, val w:Int = 8, val h:Int = 6, var defaultAction: () => A
     var action:Action = Idle
     var alive = true
 
+    /**
+      * Kills the Ninja if it is not on a passable square
+      */
+    def checkLocationValid():Unit = {
+      if (x < 0 || y < 0 || x >= w || y >= h || !cells(y)(x).isPassable) {
+        actionQueue.clear()
+        alive = false
+      }
+    }
+
+    /**
+      * Resets the Ninja to the start
+      */
+    def reset():Unit = {
+      x = 0
+      y = 0
+      action = Idle
+      alive = true
+    }
+
     def paint(ctx:dom.CanvasRenderingContext2D): Unit = {
       if (monstersAt(x, y)) {
         alive = false
@@ -340,19 +356,26 @@ class Maze(name:String, val w:Int = 8, val h:Int = 6, var defaultAction: () => A
 
       if (action.done) {
 
+
         resetGoalDist()
         check(w-1, h-1, 0)
 
         x = x + action.dx
         y = y + action.dy
 
-        if (cells(y)(x) == Maze.Goal && action != Idle) {
-          onGoal()
-          action = Idle
+        checkLocationValid()
+
+        if (alive) {
+          if (cells(y)(x) == Maze.Goal && action != Idle) {
+            onGoal()
+            action = Idle
+          } else {
+            action = if (actionQueue.nonEmpty) {
+              actionQueue.dequeue().apply()
+            } else defaultAction()
+          }
         } else {
-          action = if (actionQueue.nonEmpty) {
-            actionQueue.dequeue().apply()
-          } else defaultAction()
+          action = Idle
         }
       }
 
@@ -407,7 +430,7 @@ class Maze(name:String, val w:Int = 8, val h:Int = 6, var defaultAction: () => A
     })
 
     def move(d:Int):Action = {
-      if (action.done && canMove(d)) {
+      if (action.done && alive) {
         Move(d)
       } else {
         Idle
@@ -415,7 +438,7 @@ class Maze(name:String, val w:Int = 8, val h:Int = 6, var defaultAction: () => A
     }
 
     def moveNow(d:Int): Unit = {
-      if (action.done && canMove(d)) {
+      if (action.done && alive) {
         action = Move(d)
       }
     }

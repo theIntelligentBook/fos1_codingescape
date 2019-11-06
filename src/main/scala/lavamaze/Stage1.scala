@@ -49,9 +49,7 @@ object Stage1 extends Stage {
   def reset():Unit = {
     instructions = List.empty
     editor.setText("")
-    maze.Ninja.x = 0
-    maze.Ninja.y = 0
-    maze.Ninja.action = Idle
+    maze.Ninja.reset()
   }
 
   def render = {
@@ -109,7 +107,7 @@ object Stage1 extends Stage {
   }
 
   def tryDown() = {
-    if (maze.Ninja.canMove(Maze.SOUTH)) {
+    if (maze.Ninja.action.done) {
       instructions = instructions match {
         case Down(x) :: tail => Down(x + 1) :: tail
         case l => Down(1) :: l
@@ -120,7 +118,7 @@ object Stage1 extends Stage {
   }
 
   def tryRight() = {
-    if (maze.Ninja.canMove(Maze.EAST)) {
+    if (maze.Ninja.action.done) {
       instructions = instructions match {
         case Right(x) :: tail => Right(x + 1) :: tail
         case l => Right(1) :: l

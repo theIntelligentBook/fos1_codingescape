@@ -92,7 +92,8 @@ object StageBlocks extends Stage {
           <.div(^.cls := "btn-group-vertical align-top pr-1",
             <.button(^.cls := "btn btn-outline-secondary", ^.onClick --> addDownTile(), "down(_)"),
             <.button(^.cls := "btn btn-outline-secondary", ^.onClick --> addRightTile(), "right(_)"),
-            <.button(^.cls := "btn btn-outline-secondary", ^.onClick --> addNumberInputTile(), "Number Input")
+            <.button(^.cls := "btn btn-outline-secondary", ^.onClick --> addNumberInputTile(), "Number Input"),
+            <.button(^.cls := "btn btn-outline-primary", ^.onClick --> maze.Ninja.reset(), "Reset")
           ),
           <.div(^.cls := "canvas-scroll",
             scatterCanvas
