@@ -251,3 +251,7 @@ video.scatter-video {
     width: fit-content;
     overflow-y: scroll;
 }
+
+.error-message {
+    color: darkred;
+}

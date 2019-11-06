@@ -5,7 +5,7 @@ import org.scalajs.dom
 import org.scalajs.dom.Node
 import org.scalajs.dom.raw.{Event, HTMLTextAreaElement}
 
-class CodeEditor(rows:Int = 10, disabled:Boolean = false, private var text:String = "") extends VNode {
+class CodeEditor(rows:Int = 10, disabled:Boolean = false, private var text:String = "", placeholder:String = "") extends VNode {
 
   def setText(s:String) = {
     text = s
@@ -43,6 +43,7 @@ class CodeEditor(rows:Int = 10, disabled:Boolean = false, private var text:Strin
     ta.classList.add("pre")
     ta.classList.add("form-control")
     ta.addEventListener("change", onChange)
+    ta.setAttribute("placeholder", placeholder)
 
     ta.setAttribute("rows", rows.toString)
     if(disabled) {

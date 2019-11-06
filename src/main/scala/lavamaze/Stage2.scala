@@ -12,7 +12,7 @@ object Stage2 extends Stage {
   val logger:Logger = Logger.getLogger(Stage2.getClass)
 
 
-  val editor = new CodeEditor(text = "", rows=8, disabled=false)
+  val editor = new CodeEditor(text = "", rows=8, disabled=false, placeholder = "Write your code here")
 
   var reachedGoal = false
   val code = "+0010"
@@ -21,14 +21,23 @@ object Stage2 extends Stage {
 
   val maze:Maze = new Maze("Stage 2", onGoal = () => {
     reachedGoal = true
-    println("Complete")
-    Routing.afterAttach()
+    Routing.rerender()
   })
 
   maze.makePath()
 
+  var error:Option[String] = None
+
   val run: (Event) => Unit = { x =>
-    maze.runCode(editor.getText)
+    try {
+      error = None
+      rerender()
+      maze.runCode(editor.getText)
+    } catch {
+      case x:Throwable =>
+        error = Some(x.getMessage)
+        rerender()
+    }
   }
 
   def reset():Unit = {
@@ -46,34 +55,59 @@ object Stage2 extends Stage {
       hgutter,
 
       split(
-        card("Your turn")(
-          cardText(<.p(
+        textColumn(
+          <.h2("Raw JavaScript!"),
+          <.p(
             """
-              | This time, you get to write the script. Start by pasting the one you made earlier, but
-              | you'll notice the maze is different! Fix it up...
+              | Eventually, most programmers prefer typing text to dragging blocks. It's quicker.
             """.stripMargin
-          )),
-          cardText(<.p(),
-            editor
           ),
-          cardText(<.p(),
-            <.button(^.cls := "btn btn-primary", ^.onClick ==> run, "Run")
-          )
+          <.p(
+            """
+              | But you have to be careful and precise - when computers read programs in text, they can be put off by
+              | little things like spaces where they didn't expect them, spelling mistakes, and mismatched brackets
+              |""".stripMargin
+          ),
+          <.p(
+            """
+              | Have a go at writing another maze program, this time just using text. To give you a hand with the formatting,
+              | there's an example below. Watch for those spelling mistakes!
+              |""".stripMargin
+          ),
+          <("pre")(
+            """
+              | down(2)
+              | right(3)
+              | down(1)
+              | right(2)
+              |""".stripMargin
+          ),
+          if (reachedGoal) {
+            <.div(
+              <.p(^.cls := "congrats", s"Code: $code"),
+              <.p("Well done. But I wouldn't want to rewrite my code for every maze. Time to move on...")
+
+            )
+          } else <.div(),
+          Stage.pageControls(reachedGoal)
         )
       )(
-        card(
-          maze
-        )
-      ),
-      hgutter,
-      if (reachedGoal) {
-        <.div(
-          <.p(^.cls := "congrats", s"Code: $code"),
-          <.p("Well done. But I wouldn't want to rewrite my code for every maze. Time to move on...")
+        textColumn(
+          <.div(^.cls := "split2 split-top-right",
+            <.div(), maze,
+            hgutter, hgutter,
+            <.div(^.cls := "btn-group-vertical align-top pr-1",
+              <.button(^.cls := "btn btn-outline-primary", ^.onClick ==> run, "Run")
+            ),
+            <.div(
+              editor,
+              error.toSeq.map(s => <.p(^.cls := "error-message", s))
+            )
 
+          )
         )
-      } else <.div(),
-      Stage.pageControls(reachedGoal)
+      )
+
     ))
 
   }
