@@ -2,6 +2,7 @@ package lavamaze
 
 import com.wbillingsley.veautiful.logging.Logger
 import com.wbillingsley.veautiful.{<, ^}
+import org.scalajs.dom.Event
 
 import scala.scalajs.js
 
@@ -15,8 +16,8 @@ object Stage2 extends Stage {
 
   var reachedGoal = false
   val code = "+0010"
-  val number = 2
-  val name = "Blocks"
+  val number = 3
+  val name = "Don't typo!"
 
   val maze:Maze = new Maze("Stage 2", onGoal = () => {
     reachedGoal = true
@@ -26,7 +27,7 @@ object Stage2 extends Stage {
 
   maze.makePath()
 
-  def run(): Unit = {
+  val run: (Event) => Unit = { x =>
     Commands.activeMaze = Some(maze)
 
     maze.Ninja.x = 0
@@ -62,7 +63,7 @@ object Stage2 extends Stage {
             editor
           ),
           cardText(<.p(),
-            <.button(^.cls := "btn btn-primary", ^.onClick --> run, "Run")
+            <.button(^.cls := "btn btn-primary", ^.onClick ==> run, "Run")
           )
         )
       )(

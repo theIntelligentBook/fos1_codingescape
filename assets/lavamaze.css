@@ -10,21 +10,28 @@ font-family: 'Fira Sans', sans-serif;
 
 .congrats {
     font-family: 'Michroma', sans-serif;
-    font-size: 5vh;
-    line-height: 5vw;
 }
 
 .topwrapper {
-    height: 100vh;
-    padding: 5vh;
+    height: 100px;
+    padding: 50px;
 }
 
 .hgutter {
-    height: 5vh;
+    height: 25px;
 }
 
 .pre {
     font-family: 'Fira Mono', monospace;
+}
+
+.text-column {
+    margin-left: 50px;
+    margin-right: 50px;
+}
+
+body {
+    font-size: 20px;
 }
 
 /*
@@ -139,7 +146,7 @@ a.btn.pulse-link {
 .challenge-wrapper {
     display: grid;
     grid-template-columns: 1fr 320px;
-    grid-template-rows: 100px 1fr 120px;
+    grid-template-rows: 100px 1fr 70px;
     height: 100%;
 }
 
@@ -172,9 +179,15 @@ a.btn.pulse-link {
 
 .challenge-wrapper .page-controls {
     grid-column-start: 2;
+    grid-row-start: 3;
     text-align: center;
     padding: 10px;
     border-left: 1px solid lightgray;
+}
+
+.split2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
 }
 
 /*

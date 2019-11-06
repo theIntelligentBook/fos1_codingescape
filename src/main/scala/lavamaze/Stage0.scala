@@ -59,7 +59,9 @@ object Stage0 extends Stage {
       val url = "/lavamaze/students"
       Ajax.post(url, data)
         .recoverWith {
-          case x: Throwable => x.printStackTrace(); Future.failed(x)
+          case x: Throwable =>
+            logger.error(x.getMessage)
+            Future.successful(x)
         }
         .foreach { _ =>
           reachedGoal = true
@@ -77,41 +79,47 @@ object Stage0 extends Stage {
       hgutter,
 
       split(
-        card("Welcome to the maze...")(
-          cardText(
-            <.p("First, we need to know who you are for security reasons"),
-            <("form")(
-              <.div(^.cls := "form-group",
-                <("label")("Username *"),
-                <("input")(^.attr("type") := "text", ^.cls := "form-control", ^.attr("required") := "required", ^.on("input") ==> setUser, ^.attr("placeholder") := "The one you logged in with")
-              ),
-              <.div(^.cls := "form-group",
-                <("label")("Names *"),
-                <("textarea")(^.attr("rows") := "2", ^.cls := "form-control", ^.attr("required") := "required", ^.on("input") ==> setNames, ^.attr("placeholder") := "Your real names")
-              ),
-              <.div(^.cls := "form-group",
-                <("label")("School *"),
-                <("input")(^.attr("type") := "text", ^.cls := "form-control", ^.attr("required") := "required", ^.on("input") ==> setSchool, ^.attr("placeholder") := "Your school")
-              ),
-              <.div(^.cls := "form-group",
-                <("label")("Team name"),
-                  <("input")(^.attr("type") := "text", ^.cls := "form-control", ^.on("input") ==> setTeam, ^.attr("placeholder") := "eg, Jumping jellybeans")
-              )
-            ),
-            <.button(^.cls := "btn btn-primary", ^.onClick --> submit, "Save")
-          )
+        textColumn(
+          <.h2("Welcome to the maze..."),
+          <.p("Before we start, we need to know who you are for security reasons."),
+          <.p("Can I ask you to fill your details in the form on the right. As a reward, we'll give you your first solution code!")
         )
       )(
-        <.div(
-          if (reachedGoal) {
-            <.div(
-              <.p(^.cls := "congrats", s"Welcome, $team"),
-              <.p("Time to get coding..."),
-              <("div", "stage0")(^.cls := "btn-group",
-                Stage.readyNextLink
+        textColumn(
+          if (!reachedGoal) {
+            card("Who are you?")(
+              cardText(
+                <.div(
+                  <("form")(
+                    <.div(^.cls := "form-group",
+                      <("label")("Username *"),
+                      <("input")(^.attr("type") := "text", ^.cls := "form-control", ^.attr("required") := "required", ^.on("input") ==> setUser, ^.attr("placeholder") := "The one you logged in with")
+                    ),
+                    <.div(^.cls := "form-group",
+                      <("label")("Names *"),
+                      <("textarea")(^.attr("rows") := "2", ^.cls := "form-control", ^.attr("required") := "required", ^.on("input") ==> setNames, ^.attr("placeholder") := "Your real names")
+                    ),
+                    <.div(^.cls := "form-group",
+                      <("label")("School *"),
+                      <("input")(^.attr("type") := "text", ^.cls := "form-control", ^.attr("required") := "required", ^.on("input") ==> setSchool, ^.attr("placeholder") := "Your school")
+                    )
+                  )
+                ),
+                <.button(^.cls := "btn btn-primary", ^.onClick --> submit, "Save")
               )
             )
-          } else Stage.hiddenNextLink
+          } else {
+            card("Welcome!")(
+              cardText(
+                <.p("Our coding ninjas in this session are"),
+                <.p(s"$names"),
+                <.p("from"),
+                <.p(s"$school"),
+                <.p("Time to get coding..."),
+                Stage.pageControls(true)
+              )
+            )
+          }
         )
       )
 

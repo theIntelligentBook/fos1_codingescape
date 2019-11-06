@@ -1,5 +1,6 @@
 package lavamaze
 
+import com.wbillingsley.veautiful.logging.Logger
 import com.wbillingsley.veautiful.{<, DiffComponent, VNode, ^}
 import com.wbillingsley.veautiful.templates.SequenceItem
 
@@ -17,12 +18,14 @@ trait Stage extends DiffComponent {
 
 object Stage {
 
+  val logger:Logger = Logger.getLogger(Stage.getClass)
+
   val all = Seq(
-    Stage0, Stage1, Stage2, Stage3, Stage4, Stage5, Stage6, Stage7, Stage8
+    Stage0, Stage1, StageBlocks, Stage2, Stage3, Stage4, Stage5, Stage6, Stage7, Stage8
   )
 
   val sequence = Seq(
-    TitleCard, Stage0, Stage1, Stage2, Stage3, Stage4, Stage5, Stage6, Stage7, Stage8
+    TitleCard, Stage0, Stage1, StageBlocks, Stage2, Stage3, Stage4, Stage5, Stage6, Stage7, Stage8
   )
 
   val slideNodes:Seq[SequenceItem] = {
@@ -72,18 +75,23 @@ object Stage {
 
 
   def progressLine(s:Stage) = {
-    <.div(^.cls := (if (stageActive(s)) "stage stage-active" else "stage"),
-      <.div(^.cls := "stage-progress-label",
-        <.span(^.cls := "stagenumber", s.number.toString),
-        <.span(<.span(^.cls := "stagename", s.name))
-      ),
-      if (s.reachedGoal) {
-        <.div(^.cls := "stage-code", s.code)
-      } else {
+    if (s.reachedGoal) {
+      <.div(^.cls := (if (stageActive(s)) "stage stage-active" else "stage"),
+        <.div(^.cls := "stage-progress-label",
+          <.span(^.cls := "stagenumber", s.number.toString),
+          <.span(<.span(^.cls := "stagename", s.name))
+        ),
+        <.div(^.cls := "stage-code", s"SOLVED! CODE: ${s.code}")
+      )
+    } else {
+      <.div(^.cls := (if (stageActive(s)) "stage stage-active" else "stage"),
+        <.div(^.cls := "stage-progress-label",
+          <.span(^.cls := "stagenumber", s.number.toString),
+          <.span(<.span(^.cls := "stagename", s.name))
+        ),
         <.div(^.cls := "stage-locked", "UNSOLVED")
-      }
-
-    )
+      )
+    }
   }
 
   def progressBlock = {

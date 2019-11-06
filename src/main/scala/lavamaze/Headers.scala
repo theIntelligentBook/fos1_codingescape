@@ -35,9 +35,11 @@ object Headers {
 
   def cardText(ac: DElAppliable *) = <.div(^.cls := "card-text", <.div(ac:_*))
 
-  def split(l:DElement)(r:DElement) = <.div(^.cls := "row",
-    <.div(^.cls := "col-4", l),
-    <.div(^.cls := "col-8", r)
+  def textColumn(ac: DElAppliable *) = <.div(^.cls := "text-column", <.div(ac:_*))
+
+  def split(l:DElement)(r:DElement) = <.div(^.cls := "split2",
+    <.div(l),
+    <.div(r)
   )
 
 

@@ -1,6 +1,7 @@
 package lavamaze
 
 import com.wbillingsley.veautiful.{<, ^}
+import org.scalajs.dom.Event
 
 import scala.scalajs.js
 
@@ -28,7 +29,7 @@ object Stage6 extends Stage {
   maze.makeSpoilerPath()
   maze.showRoutes = true
 
-  def run(): Unit = {
+  val run: (Event) => Unit = { x =>
     Commands.activeMaze = Some(maze)
 
     maze.Ninja.x = 0
@@ -65,7 +66,7 @@ object Stage6 extends Stage {
             editor
           ),
           cardText(<.p(),
-            <.button(^.cls := "btn btn-primary", ^.onClick --> run, "Run")
+            <.button(^.cls := "btn btn-primary", ^.onClick ==> run, "Run")
           )
         )
       )(

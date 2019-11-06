@@ -3,6 +3,7 @@ package lavamaze
 import com.wbillingsley.veautiful.{<, ^}
 import lavamaze.Stage5.reachedGoal
 import org.scalajs.dom
+import org.scalajs.dom.Event
 import org.scalajs.dom.raw.HTMLInputElement
 
 import scala.scalajs.js
@@ -31,7 +32,7 @@ object Stage7 extends Stage {
   val maze:Maze = new Maze("Stage 7",
     w = 12, h = 8,
     defaultAction = () => {
-      js.eval(editor.getText)
+// TODO: FIX      js.eval(editor.getText)
       Idle
     }
   )
@@ -42,7 +43,7 @@ object Stage7 extends Stage {
   maze.routesConsiderMonsters = true
   maze.createBlobs(2)
 
-  def run(): Unit = {
+  val run: (Event) => Unit = { x =>
     Commands.activeMaze = Some(maze)
 
     maze.Ninja.alive = true
@@ -78,7 +79,7 @@ object Stage7 extends Stage {
             editor
           ),
           cardText(<.p(),
-            <.button(^.cls := "btn btn-primary", ^.onClick --> run, "Run")
+            <.button(^.cls := "btn btn-primary", ^.onClick ==> run, "Run")
           ),
           <.h4("Password"),
           <("input")(^.cls := "form-control", ^.attr("type") := "text", ^.on("input") ==> checkPassword)

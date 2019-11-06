@@ -3,6 +3,7 @@ package lavamaze
 import com.wbillingsley.veautiful.{<, ^}
 import lavamaze.Stage4.{editor, reachedGoal}
 import org.scalajs.dom
+import org.scalajs.dom.Event
 import org.scalajs.dom.raw.HTMLInputElement
 
 import scala.scalajs.js
@@ -31,7 +32,7 @@ object Stage5 extends Stage {
 
   maze.makeSpoilerPath()
 
-  def run(): Unit = {
+  val run: (Event) => Unit = { x =>
     Commands.activeMaze = Some(maze)
 
     maze.Ninja.x = 0
@@ -66,7 +67,7 @@ object Stage5 extends Stage {
                 editor
               ),
               cardText(<.p(),
-                <.button(^.cls := "btn btn-primary", ^.onClick --> run, "Run")
+                <.button(^.cls := "btn btn-primary", ^.onClick ==> run, "Run")
               ),
               <.h4("Password"),
               <("input")(^.cls := "form-control", ^.attr("type") := "text", ^.on("input") ==> checkPassword)

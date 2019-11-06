@@ -1,5 +1,6 @@
 package lavamaze
 
+import com.wbillingsley.veautiful.logging.Logger
 import org.scalajs.dom
 
 import scala.collection.mutable
@@ -8,15 +9,20 @@ import scala.scalajs.js.annotation.{JSExport, _}
 @JSExportTopLevel("Commands")
 object Commands {
 
+  val logger:Logger = Logger.getLogger(Commands.getClass)
+
   @JSExport
   def ping() = {
     println("ping")
   }
 
+  @JSExport
   var activeMaze:Option[Maze] = None
 
   @JSExport
-  def move(d:Int) = activeMaze.foreach { m => m.actionQueue.enqueue(() => m.Ninja.move(d))}
+  def move(d:Int) = {
+    activeMaze.foreach { m => m.actionQueue.enqueue(() => m.Ninja.move(d))}
+  }
 
   @JSExport
   def right(i:Int) = activeMaze.foreach { m => m.actionQueue.enqueueAll(Seq.fill(i)(() => m.Ninja.move(Maze.EAST)))}

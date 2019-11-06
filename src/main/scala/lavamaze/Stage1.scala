@@ -3,9 +3,12 @@ package lavamaze
 import com.wbillingsley.veautiful.logging.Logger
 import com.wbillingsley.veautiful.{<, ^}
 import example.ScalaJSExample
+import org.scalajs.dom.Event
 
 import scala.scalajs.js
+import scala.scalajs.js.annotation.{JSExport, JSExportTopLevel}
 
+@JSExportTopLevel("Stage1")
 object Stage1 extends Stage {
   import Headers._
 
@@ -13,6 +16,11 @@ object Stage1 extends Stage {
 
   val editor = new CodeEditor(text = "", rows=8, disabled=true)
 
+  var stage = 0
+
+  var runAuto = false
+
+  @JSExport
   var reachedGoal = false
 
   val code = "0000"
@@ -22,16 +30,19 @@ object Stage1 extends Stage {
   override val name = "By example"
 
   val maze:Maze = new Maze("Stage 1", onGoal = () => {
-    reachedGoal = true
-    println("Complete")
-    Routing.afterAttach()
+    if (runAuto) {
+      stage = 2
+      reachedGoal = true
+    } else if (stage < 1) stage = 1
+    Routing.rerender()
   })
 
   maze.makePath()
 
   var instructions = List.empty[Instr]
 
-  def run(): Unit = {
+  val run: (Event) => Unit = { x =>
+    runAuto = true
     Commands.activeMaze = Some(maze)
 
     maze.Ninja.x = 0
@@ -57,40 +68,43 @@ object Stage1 extends Stage {
       hgutter,
 
       split(
-        card("Programming by example")(
-          cardText(
-            <.p("Use the buttons to guide the ninja through the maze. As you do, I'll write the program for you!"),
-            <.p("Click Run at any time to see it in action")
+        textColumn(
+          <.h2("Programming by example"),
+          <.p(^.cls := "",
+            "Programs are instructions for computers to follow."
           ),
-          cardText(
-            <.div(^.cls := "btn-group",
-              <.button(^.cls := "btn btn-secondary", ^.onClick --> tryDown, "Down"),
-              <.button(^.cls := "btn btn-secondary", ^.onClick --> tryRight, "Right")
+          <.p("Use the buttons underneath the maze to guide the ninja through the maze. As you do, I'll write down what you did as a JavaScript program!"),
+          <.p("Click Run at any time to see the program you've written in action. Click Reset if you want to clear the program and put the ninja back at the start."),
+          card("I'll write your program here")(
+            cardText(<.p(),
+              editor
+            ),
+            cardText(<.p(),
+              <("div", "stage1ctrl")(^.cls := "btn-group",
+                <.button(^.cls := "btn btn-outline-secondary", ^.onClick --> reset, "Reset"),
+                <.button(^.cls := "btn btn-outline-primary", ^.onClick ==> run, "Run")
+              )
             )
           ),
-          cardText(<.p(),
-            editor
-          ),
-          cardText(<.p(),
-            <("div", "stage1ctrl")(^.cls := "btn-group",
-              <.button(^.cls := "btn btn-outline-secondary", ^.onClick --> reset, "Reset"),
-              <.button(^.cls := "btn btn-outline-primary", ^.onClick --> run, "Run")
+          hgutter,
+          if (stage == 1) {
+            <.div(
+              <.p("Your ninja's reached the goal controlling him by hand. Next, click the run button in the program box to see it run the program you wrote to guide him there."),
             )
-          )
+          } else if (reachedGoal) {
+            <.p(^.cls := "congrats", s"Stage complete. Code: $code")
+          } else <.div(),
+          Stage.pageControls(reachedGoal)
         )
       )(
-        card(
-          maze
+        textColumn(
+          <.div(maze),
+          <.div(^.cls := "btn-group",
+            <.button(^.cls := "btn btn-secondary", ^.onClick --> { runAuto = false; tryDown }, "Down"),
+            <.button(^.cls := "btn btn-secondary", ^.onClick --> { runAuto = false; tryRight }, "Right")
+          )
         )
-      ),
-      hgutter,
-      if (reachedGoal) {
-        <.div(
-          <.p(^.cls := "congrats", s"Code: $code"),
-          <.p("You've reached the goal. Click the run button to see it run your script. And before you move on, copy and paste the text.")
-        )
-      } else <.div(),
-      Stage.pageControls(reachedGoal)
+      )
     ))
 
   }
