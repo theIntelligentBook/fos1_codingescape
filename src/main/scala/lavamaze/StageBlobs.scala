@@ -25,7 +25,7 @@ object StageBlobs extends Stage {
     """.stripMargin, rows=10, disabled=true)
 
   var reachedGoal = false
-  val code = "+0001"
+  val code = "33"
   val number = 9
   val name = "Enter the Blobs"
 

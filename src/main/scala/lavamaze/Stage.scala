@@ -21,11 +21,11 @@ object Stage {
   val logger:Logger = Logger.getLogger(Stage.getClass)
 
   val all = Seq(
-    Stage0, Stage1, StageBlocks, Stage2, StageCardsOfDoom, StageIf, StageSpoilerPaths, StageJellyFlood, StageCountdown, StageBlobs, Stage8
+    Stage0, Stage1, StageBlocks, StageTextCode, StageCardsOfDoom, StageIf, StageSpoilerPaths, StageJellyFlood, StageCountdown, StageBlobs, Stage8
   )
 
   val sequence = Seq(
-    TitleCard, Stage0, Stage1, StageBlocks, Stage2, StageCardsOfDoom, StageIf, StageSpoilerPaths, StageJellyFlood, StageCountdown, StageBlobs, Stage8
+    TitleCard, Stage0, Stage1, StageBlocks, StageTextCode, StageCardsOfDoom, StageIf, StageSpoilerPaths, StageJellyFlood, StageCountdown, StageBlobs, Stage8
   )
 
 
@@ -82,7 +82,7 @@ object Stage {
           <.span(^.cls := "stagenumber", s.number.toString),
           <.span(<.span(^.cls := "stagename", s.name))
         ),
-        <.div(^.cls := "stage-code", s"SOLVED! CODE: ${s.code}")
+        <.div(^.cls := "stage-code", s"CODE: ${s.code}")
       )
     } else {
       <.div(^.cls := (if (stageActive(s)) "stage stage-active" else "stage"),

@@ -16,7 +16,7 @@ object Stage0 extends Stage {
 
 
   var reachedGoal = false
-  val code = "0000"
+  val code = "73"
   val number = 0
   val name = "Who are you?"
 

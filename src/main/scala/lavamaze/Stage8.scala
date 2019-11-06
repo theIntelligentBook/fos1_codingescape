@@ -16,7 +16,7 @@ object Stage8 extends Stage {
     val s = e.target match {
       case x:HTMLInputElement => x.value
     }
-    if (s == "I ESCAPED!") {
+    if (s.toUpperCase().trim() == "I ESCAPED!") {
       reachedGoal = true
       Routing.rerender()
     }
@@ -41,6 +41,9 @@ object Stage8 extends Stage {
             | 69  E       79  O      89  Y
             | 70  F       80  P      90  Z
             |""".stripMargin
+        ),
+        <.p(
+          "Now you just need the numbers to translate. Where could they be?"
         ),
         card("Escape password")(
           cardText(

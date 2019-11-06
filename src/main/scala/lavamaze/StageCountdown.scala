@@ -20,7 +20,7 @@ object StageCountdown extends Stage {
   var reachedGoal = false
   val code = "+1000"
   val number = 8
-  val name = "Cwonnutod"
+  val name = "68"
 
   val maze:Maze = new Maze("Stage 4",
     defaultAction = () => {

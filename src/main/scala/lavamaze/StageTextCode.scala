@@ -6,16 +6,16 @@ import org.scalajs.dom.Event
 
 import scala.scalajs.js
 
-object Stage2 extends Stage {
+object StageTextCode extends Stage {
   import Headers._
 
-  val logger:Logger = Logger.getLogger(Stage2.getClass)
+  val logger:Logger = Logger.getLogger(StageTextCode.getClass)
 
 
   val editor = new CodeEditor(text = "", rows=8, disabled=false, placeholder = "Write your code here")
 
   var reachedGoal = false
-  val code = "+0010"
+  val code = "83"
   val number = 3
   val name = "Don't typo!"
 
