@@ -9,79 +9,53 @@ object Stage8 extends Stage {
 
   var reachedGoal = false
   val code = "ESCAPED!"
-  val number = 8
+  val number = 10
   val name = "Final conundrum"
-
-  val maze:Maze = new Maze("Stage 8", onGoal = () => {
-    reachedGoal = true
-    println("Complete")
-    Routing.afterAttach()
-  })
-
-  maze.makePath()
 
   def checkPassword(e:dom.Event): Unit = {
     val s = e.target match {
       case x:HTMLInputElement => x.value
     }
-    if (s == "-1") {
+    if (s == "I ESCAPED!") {
       reachedGoal = true
-      Routing.afterAttach()
+      Routing.rerender()
     }
   }
 
   def render = {
     challengeLayout(number, name, false)(<.div(
       hgutter,
-
-      split(
-        card("Password")(
-          <.p("Maximum two characters"),
-          <.div(
-            <("input")(^.cls := "form-control", ^.attr("type") := "text", ^.attr("maxlength") := "2", ^.on("input") ==> checkPassword)
-          )
-        )
-      )(
-        card("I hope you are watching the clock!")(
+      textColumn(
+        <.h2("The oldest code in the book"),
+        <.p("Computers can only store binary. That means they have to represent letters as numbers."),
+        <.p("This one's the 'oldest code in the book': ASCII."),
+        <("pre")(
+          """ 32  Space   71  G      81  Q
+            | 33  !       72  H      82  R
+            | 34  "       73  I      83  S
+            | 35  #       74  J      84  T
+            | 65  A       75  K      85  U
+            | 66  B       76  L      86  V
+            | 67  C       77  M      87  W
+            | 68  D       78  N      88  X
+            | 69  E       79  O      89  Y
+            | 70  F       80  P      90  Z
+            |""".stripMargin
+        ),
+        card("Escape password")(
           cardText(
-            <.div(
-              <.p("And so our final conundrum is a 4-bit calculation..."),
-              <("pre")(
-                if (Stage1.reachedGoal) Stage1.code else "(undiscovered)"
-              ),
-              <("pre")(
-                if (Stage2.reachedGoal) Stage2.code else "(undiscovered)"
-              ),
-              <("pre")(
-                if (StageCardsOfDoom.reachedGoal) StageCardsOfDoom.code else "(undiscovered)"
-              ),
-              <("pre")(
-                if (StageIf.reachedGoal) StageIf.code else "(undiscovered)"
-              ),
-              <("pre")(
-                if (StageSpoilerPaths.reachedGoal) StageSpoilerPaths.code else "(undiscovered)"
-              ),
-              <("pre")(
-                if (StageCountdown.reachedGoal) StageCountdown.code else "(undiscovered)"
-              ),
-              <("pre")(
-                if (StageBlobs.reachedGoal) StageBlobs.code else "(undiscovered)"
-              ),
-              <("pre")(
-                "answer, in decimals"
-              )
-            )
+            <.p("Enter password to escape"),
+            <("input")(^.cls := "form-control", ^.attr("type") := "text", ^.attr("maxlength") := "10", ^.on("input") ==> checkPassword)
           )
-        )
-      ),
-      hgutter,
-      if (reachedGoal) {
-        <.div(
-          <.p(^.cls := "congrats", "ESCAPED! ESCAPED! ESCAPED!"),
-          <.p("Congratulations, coding ninja!")
-        )
-      } else <.div(),
-      Stage.pageControls(false)
+        ),
+        hgutter,
+        if (reachedGoal) {
+          <.div(
+            <.p(^.cls := "congrats", "Congratulations, coding ninja!")
+          )
+        } else <.div(),
+        Stage.pageControls(false)
+      )
     ))
 
   }
