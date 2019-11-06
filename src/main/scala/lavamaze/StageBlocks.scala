@@ -80,7 +80,12 @@ object StageBlocks extends Stage {
               | If you need to pull a tile back out of a socket, press and hold the mouse button on it for a second.
               |""".stripMargin
           ),
-          <.p("Your goal, again, is to get the ninja to the goal square.")
+          if (reachedGoal) {
+            <.div(
+              <.p("There's no blocking your ninja!"),
+              <.p(^.cls := "congrats", s"Code: $code")
+            )
+          } else <.p("Your goal, again, is to get the ninja to the goal square."),
         )
       )
     )(

@@ -76,8 +76,8 @@ module.exports = __webpack_require__(1);
 /***/ (function(module, exports) {
 
 module.exports = {
-  "require": (function(x3) {
-    return {}[x3]
+  "require": (function(x5) {
+    return {}[x5]
   })
 }
 
