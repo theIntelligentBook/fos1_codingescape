@@ -63,7 +63,7 @@ object Maze {
 
 }
 
-class Maze(name:String, val w:Int = 8, val h:Int = 6, defaultAction: () => Action = () => Idle, onGoal:() => Unit = { () => }) extends VNode {
+class Maze(name:String, val w:Int = 8, val h:Int = 6, var defaultAction: () => Action = () => Idle, onGoal:() => Unit = { () => }) extends VNode {
 
   type Ctx2D = dom.CanvasRenderingContext2D
 
@@ -253,15 +253,7 @@ class Maze(name:String, val w:Int = 8, val h:Int = 6, defaultAction: () => Actio
 
   }
 
-  /*
-   * Executes a dynamic script on this maze
-   */
-  def runCode(code:String):Unit = {
-    Ninja.x = 0
-    Ninja.y = 0
-    Ninja.action = Idle
-    actionQueue.dequeueAll(_ => true)
-
+  def bindCode(code:String):js.Dynamic = {
     val ping = () => println("ping!")
 
     val right = (i:Int) => {
@@ -287,7 +279,7 @@ class Maze(name:String, val w:Int = 8, val h:Int = 6, defaultAction: () => Actio
       goalDistance(Ninja.x + move.dx, Ninja.y + move.dy)
     }
 
-    Commands.evalWithContext(
+    Commands.bindWithContext(
       args = Seq(
         "ping" -> ping,
         "right" -> right,
@@ -310,6 +302,29 @@ class Maze(name:String, val w:Int = 8, val h:Int = 6, defaultAction: () => Actio
     )
   }
 
+  /*
+   * Executes a dynamic script on this maze
+   */
+  def runCode(code:String):Unit = {
+    Ninja.x = 0
+    Ninja.y = 0
+    Ninja.action = Idle
+    actionQueue.dequeueAll(_ => true)
+
+    bindCode(code)()
+  }
+
+  def setActionAlgorithm(code:String):Unit = {
+    Ninja.x = 0
+    Ninja.y = 0
+    Ninja.action = Idle
+    actionQueue.dequeueAll(_ => true)
+
+    defaultAction = () => {
+      bindCode(code)()
+      Idle
+    }
+  }
 
   object Ninja {
     var x = 0

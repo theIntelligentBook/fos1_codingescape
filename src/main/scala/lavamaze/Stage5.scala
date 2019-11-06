@@ -1,7 +1,6 @@
 package lavamaze
 
 import com.wbillingsley.veautiful.{<, ^}
-import lavamaze.Stage4.{editor, reachedGoal}
 import org.scalajs.dom
 import org.scalajs.dom.Event
 import org.scalajs.dom.raw.HTMLInputElement

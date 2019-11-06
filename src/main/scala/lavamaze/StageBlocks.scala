@@ -8,6 +8,7 @@ import lavamaze.Headers.{challengeLayout, hgutter, split, textColumn}
 
 import scala.scalajs.js
 import scala.scalajs.js.annotation.{JSExport, JSExportTopLevel}
+import scala.util.Random
 
 @JSExportTopLevel("StageBlocks")
 object StageBlocks extends Stage {
@@ -64,7 +65,7 @@ object StageBlocks extends Stage {
               |""".stripMargin),
           <.p(
             """
-              | In this exercise, we've got our own blocks language that looks like JavaScript when it's plugged together,
+              | In this exercise, we'll use a blocks language that looks like JavaScript when it's plugged together,
               | like in the video below.
               |""".stripMargin
           ),
@@ -75,7 +76,7 @@ object StageBlocks extends Stage {
           ),
           <.p(
             """
-              | Drop the program blocks into the sockets under the Run button, and click Run!
+              | Put your program into the sockets under the Run button, and click Run.
               | If you need to pull a tile back out of a socket, press and hold the mouse button on it for a second.
               |""".stripMargin
           ),
@@ -102,8 +103,8 @@ object StageBlocks extends Stage {
   }
 
   def addTile(t:Tile[JSExpr]) = {
-    t.x = 250
-    t.y = 100
+    t.x = 250 + Random.nextInt(10)
+    t.y = 100 + Random.nextInt(10)
     scatterCanvas.tiles.append(t)
     scatterCanvas.update()
     scatterCanvas.layout()

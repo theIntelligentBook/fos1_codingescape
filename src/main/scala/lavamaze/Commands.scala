@@ -39,5 +39,13 @@ object Commands {
     func.call(thisVal, argVals:_*)
   }
 
+  @JSExport
+  def bindWithContext(thisVal: js.Any = new js.Object(), args:Seq[(String, js.Any)] = Seq.empty, code:String = ""):js.Dynamic = {
+    val argNames = args.map(_._1)
+    val func = new js.Function(argNames :+ code :_*)
+    val argVals = args.map(_._2)
+    func.bind(thisVal, argVals:_*)
+  }
+
 
 }

@@ -58,7 +58,7 @@ object Stage1 extends Stage {
 
     logger.debug(s"Rendering stage 1")
 
-    challengeLayout(1, "Show me an example", reachedGoal)(<.div(
+    challengeLayout(1, "Show me the way to go home", reachedGoal)(<.div(
       hgutter,
 
       split(
@@ -67,8 +67,9 @@ object Stage1 extends Stage {
           <.p(^.cls := "",
             "Programs are instructions for computers to follow."
           ),
-          <.p("Use the buttons next to the maze to guide the ninja through the maze. As you do, I'll write down what you did as a JavaScript program!"),
-          <.p("Click Run at any time to see the program you've written in action. Click Reset if you want to clear the program and put the ninja back at the start."),
+          <.p("Use the buttons next to the maze to guide the ninja through the maze. As you do, I'll write down what you did as a JavaScript program."),
+          <.p("Click Run at any time to see the program you've written in action. "),
+          <.p("Click Reset if you want to clear the program and put the ninja back at the start."),
           hgutter,
           if (stage == 1) {
             <.div(^.cls := "pulse-link",
@@ -83,8 +84,8 @@ object Stage1 extends Stage {
         textColumn(
           <.div(^.cls := "split2 split-top-right",
             <.div(^.cls := "btn-group-vertical pr-1",
-              <.button(^.cls := "btn btn-secondary", ^.onClick --> { runAuto = false; tryRight() }, "Right"),
-                <.button(^.cls := "btn btn-secondary", ^.onClick --> { runAuto = false; tryDown() }, "Down")
+              <.button(^.cls := "btn btn-outline-secondary", ^.onClick --> { runAuto = false; tryRight() }, "Right"),
+                <.button(^.cls := "btn btn-outline-secondary", ^.onClick --> { runAuto = false; tryDown() }, "Down")
             ),
             maze,
             hgutter, hgutter,
@@ -92,7 +93,7 @@ object Stage1 extends Stage {
             <.h3("I'll write your program here"),
             <("div", "stage1ctrl")(^.cls := "btn-group-vertical pr-1",
               <.button(^.cls := "btn btn-outline-secondary", ^.onClick --> reset, "Reset"),
-              <.button(^.cls := "btn btn-outline-primary", ^.onClick ==> run, "Run")
+              <.button(^.cls := (if (stage == 1) "btn btn-outline-primary pulse-link" else "btn btn-outline-primary"), ^.onClick ==> run, "Run")
             ),
             editor
           )

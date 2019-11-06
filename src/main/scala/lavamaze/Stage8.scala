@@ -56,7 +56,7 @@ object Stage8 extends Stage {
                 if (StageCardsOfDoom.reachedGoal) StageCardsOfDoom.code else "(undiscovered)"
               ),
               <("pre")(
-                if (Stage4.reachedGoal) Stage4.code else "(undiscovered)"
+                if (StageIf.reachedGoal) StageIf.code else "(undiscovered)"
               ),
               <("pre")(
                 if (Stage5.reachedGoal) Stage5.code else "(undiscovered)"
