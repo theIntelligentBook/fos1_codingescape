@@ -4,7 +4,7 @@ import com.wbillingsley.scatter.{HBox, Socket, Tile, TileForeignObject, TileSpac
 import com.wbillingsley.scatter.jstiles.{JSBlank, JSExpr}
 import com.wbillingsley.veautiful.{<, ^}
 
-class DeleteTile (tileSpace:TileSpace[JSExpr], cls:String = "btn btn-danger") extends Tile(tileSpace, false, true, cssClass = "delete") {
+class DeleteTile (tileSpace:TileSpace[JSExpr], cls:String = "btn btn-danger") extends Tile(tileSpace, false, false, cssClass = "delete") {
 
   var remembered:Option[Tile[JSExpr]] = None
 
@@ -16,7 +16,7 @@ class DeleteTile (tileSpace:TileSpace[JSExpr], cls:String = "btn btn-danger") ex
     s.content = None
   })
 
-  override def returnType: String = "void"
+  override def returnType: String = ""
 
   override val tileContent = {
     VBox(

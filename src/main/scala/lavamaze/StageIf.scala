@@ -1,7 +1,7 @@
 package lavamaze
 
-import com.wbillingsley.scatter.{HBox, Socket, Tile, TileComponent, TileSpace, TileText}
-import com.wbillingsley.scatter.jstiles.{FunctionCall, FunctionCallTile, IfElseTile, JSExpr, JSLang, JSNumber, ProgramTile}
+import com.wbillingsley.scatter.{HBox, Socket, SocketList, Tile, TileComponent, TileSpace, TileText, VBox}
+import com.wbillingsley.scatter.jstiles.{FunctionCall, FunctionCallTile, IfElseTile, JSBlock, JSExpr, JSLang, JSNumber, ProgramTile}
 import com.wbillingsley.veautiful.logging.Logger
 import com.wbillingsley.veautiful.{<, ^}
 import org.scalajs.dom.Event
@@ -22,7 +22,7 @@ object StageIf extends Stage {
 
   @JSExport
   val scatterCanvas = new TileSpace(Some("example"), JSLang)((512, 384))
-  val pt = new ProgramTile(scatterCanvas, <.button(^.cls := "btn btn-sm btn-primary", ^.onClick --> run(), "Run"))
+  val pt = new WhenTile(scatterCanvas, "When a new action is needed")
   pt.x = 2
   pt.y = 2
 
@@ -141,7 +141,8 @@ object StageIf extends Stage {
               <.button(^.cls := "btn btn-outline-secondary", ^.onClick --> addRightTile(), "right(1)"),
               <.button(^.cls := "btn btn-outline-secondary", ^.onClick --> addCanGoDownTile(), "canGoDown"),
               <.button(^.cls := "btn btn-outline-secondary", ^.onClick --> addCanGoRightTile(), "canGoRight"),
-              <.button(^.cls := "btn btn-outline-secondary", ^.onClick --> addIfElseTile(), "if ... else ...")
+              <.button(^.cls := "btn btn-outline-secondary", ^.onClick --> addIfElseTile(), "if ... else ..."),
+              <.button(^.cls := "btn btn-primary", ^.onClick --> run(), "Run")
             ),
             <.div(^.cls := "canvas-scroll",
               scatterCanvas
@@ -164,5 +165,22 @@ class SnippetTile(tileSpace:TileSpace[JSExpr], name:String, expr:JSExpr, overrid
   }
 
   override def toLanguage: JSExpr = expr
+
+}
+
+class WhenTile(tileSpace:TileSpace[JSExpr], name:String, override val returnType:String = "") extends Tile(tileSpace, mobile = false, typeLoop = false, cssClass = "play") {
+
+  val socketList = new SocketList(this)
+
+  override val tileContent = {
+    VBox(
+      TileText[JSExpr](name),
+      socketList
+    )
+  }
+
+  override def toLanguage: JSExpr = JSBlock(
+    socketList.sockets.flatMap(_.content).map(_.toLanguage)
+  )
 
 }
