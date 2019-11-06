@@ -54,6 +54,12 @@
     stroke: green;
 }
 
+.scatter-area .tile.delete {
+    stroke: darkred;
+    fill: pink;
+}
+
+
 .scatter-area .socket {
     stroke: slategray;
     fill: whitesmoke;

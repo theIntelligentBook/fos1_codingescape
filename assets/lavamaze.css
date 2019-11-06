@@ -134,7 +134,7 @@ h1, h2, h3, h4 {
  * Controls
  */
 
-a.btn.pulse-link {
+.pulse-link {
     animation: pulse-purple 2s infinite;
 }
 
@@ -190,6 +190,10 @@ a.btn.pulse-link {
     grid-template-columns: 1fr 1fr;
 }
 
+.split-top-right {
+    align-items: start;
+}
+
 /*
  * Countdown timer
  */
@@ -234,3 +238,16 @@ a.btn.pulse-link {
     font-size: 20px;
 }
 
+/*
+ * CSS for various stages
+ */
+
+video.scatter-video {
+    height: 150px;
+}
+
+.canvas-scroll {
+    width: -moz-fit-content;
+    width: fit-content;
+    overflow-y: scroll;
+}

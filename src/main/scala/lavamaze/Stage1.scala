@@ -27,7 +27,7 @@ object Stage1 extends Stage {
 
   override val number = 1
 
-  override val name = "By example"
+  override val name = "Show me the way"
 
   val maze:Maze = new Maze("Stage 1", onGoal = () => {
     if (runAuto) {
@@ -67,22 +67,11 @@ object Stage1 extends Stage {
           <.p(^.cls := "",
             "Programs are instructions for computers to follow."
           ),
-          <.p("Use the buttons underneath the maze to guide the ninja through the maze. As you do, I'll write down what you did as a JavaScript program!"),
+          <.p("Use the buttons next to the maze to guide the ninja through the maze. As you do, I'll write down what you did as a JavaScript program!"),
           <.p("Click Run at any time to see the program you've written in action. Click Reset if you want to clear the program and put the ninja back at the start."),
-          card("I'll write your program here")(
-            cardText(<.p(),
-              editor
-            ),
-            cardText(<.p(),
-              <("div", "stage1ctrl")(^.cls := "btn-group",
-                <.button(^.cls := "btn btn-outline-secondary", ^.onClick --> reset, "Reset"),
-                <.button(^.cls := "btn btn-outline-primary", ^.onClick ==> run, "Run")
-              )
-            )
-          ),
           hgutter,
           if (stage == 1) {
-            <.div(
+            <.div(^.cls := "pulse-link",
               <.p("Your ninja's reached the goal controlling him by hand. Next, click the run button in the program box to see it run the program you wrote to guide him there."),
             )
           } else if (reachedGoal) {
@@ -92,11 +81,22 @@ object Stage1 extends Stage {
         )
       )(
         textColumn(
-          <.div(maze),
-          <.div(^.cls := "btn-group",
-            <.button(^.cls := "btn btn-secondary", ^.onClick --> { runAuto = false; tryDown }, "Down"),
-            <.button(^.cls := "btn btn-secondary", ^.onClick --> { runAuto = false; tryRight }, "Right")
+          <.div(^.cls := "split2 split-top-right",
+            <.div(^.cls := "btn-group-vertical pr-1",
+              <.button(^.cls := "btn btn-secondary", ^.onClick --> { runAuto = false; tryRight() }, "Right"),
+                <.button(^.cls := "btn btn-secondary", ^.onClick --> { runAuto = false; tryDown() }, "Down")
+            ),
+            maze,
+            hgutter, hgutter,
+            <.div(),
+            <.h3("I'll write your program here"),
+            <("div", "stage1ctrl")(^.cls := "btn-group-vertical pr-1",
+              <.button(^.cls := "btn btn-outline-secondary", ^.onClick --> reset, "Reset"),
+              <.button(^.cls := "btn btn-outline-primary", ^.onClick ==> run, "Run")
+            ),
+            editor
           )
+
         )
       )
     ))

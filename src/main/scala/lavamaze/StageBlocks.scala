@@ -38,8 +38,14 @@ object StageBlocks extends Stage {
   @JSExport
   val scatterCanvas = new TileSpace(Some("example"), JSLang)((512, 384))
   val pt = new ProgramTile(scatterCanvas, <.button(^.cls := "btn btn-sm btn-primary", ^.onClick --> run(), "Run"))
+  pt.x = 2
+  pt.y = 2
 
-  scatterCanvas.tiles.append(pt)
+  val dt = new DeleteTile(scatterCanvas)
+  dt.x = 420
+  dt.y = 2
+
+  scatterCanvas.tiles.appendAll(Seq(pt, dt))
 
   override protected def render: DiffNode = {
 
@@ -54,31 +60,41 @@ object StageBlocks extends Stage {
             """
               | You might have seen blocks languages like Scratch or Blockly before.
               | These are languages that give you little blocks that you drag and drop together to form a program.
-              | The blocks make it easier to avoid typing errors, but it is slower dragging blocks together than typing.
+              | The blocks make it easier to avoid typing errors.
               |""".stripMargin),
           <.p(
             """
-              | In this exercise, we've got our own blocks language ("Scatter") that when you compose it looks like
-              | JavaScript. Drop the program blocks into the green tile and click Run to run the program.
-              | Your goal, again, is to get the ninja to the goal square.
+              | In this exercise, we've got our own blocks language that looks like JavaScript when it's plugged together,
+              | like in the video below.
               |""".stripMargin
           ),
           <.p(
+            <("video")(^.cls := "scatter-video", ^.alt := "Scatter tiles being dragged and dropped",
+              ^.src := "assets/scatter.mp4",
+              ^.attr("controls") := "true", ^.attr("autoplay") := "true", ^.attr("loop") := "true", ^.attr("muted") := "true")
+          ),
+          <.p(
             """
+              | Drop the program blocks into the sockets under the Run button, and click Run!
               | If you need to pull a tile back out of a socket, press and hold the mouse button on it for a second.
               |""".stripMargin
-          )
+          ),
+          <.p("Your goal, again, is to get the ninja to the goal square.")
         )
       )
     )(
-      <.div(
-        maze,
-        scatterCanvas,
-        <.div(
-          <.div(^.cls := "btn-group",
+      textColumn(
+        <.div(^.cls := "split2 split-top-right",
+          <.div(),
+          maze,
+          hgutter,hgutter,
+          <.div(^.cls := "btn-group-vertical align-top pr-1",
             <.button(^.cls := "btn btn-outline-secondary", ^.onClick --> addDownTile(), "down(_)"),
             <.button(^.cls := "btn btn-outline-secondary", ^.onClick --> addRightTile(), "right(_)"),
             <.button(^.cls := "btn btn-outline-secondary", ^.onClick --> addNumberInputTile(), "Number Input")
+          ),
+          <.div(^.cls := "canvas-scroll",
+            scatterCanvas
           )
         )
       )
