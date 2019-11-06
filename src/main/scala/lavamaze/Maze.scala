@@ -8,6 +8,7 @@ import org.scalajs.dom.{Node, html}
 import org.scalajs.dom.raw.HTMLCanvasElement
 
 import scala.collection.mutable
+import scala.scalajs.js
 
 
 object Maze {
@@ -250,6 +251,63 @@ class Maze(name:String, val w:Int = 8, val h:Int = 6, defaultAction: () => Actio
 
     for { b <- blobGuards } b.paint(ctx)
 
+  }
+
+  /*
+   * Executes a dynamic script on this maze
+   */
+  def runCode(code:String):Unit = {
+    Ninja.x = 0
+    Ninja.y = 0
+    Ninja.action = Idle
+    actionQueue.dequeueAll(_ => true)
+
+    val ping = () => println("ping!")
+
+    val right = (i:Int) => {
+      actionQueue.enqueueAll(Seq.fill(i)(() => Ninja.move(Maze.EAST)))
+    }
+
+    val down = (i:Int) => {
+      actionQueue.enqueueAll(Seq.fill(i)(() => Ninja.move(Maze.SOUTH)))
+    }
+
+    val left = (i:Int) => {
+      actionQueue.enqueueAll(Seq.fill(i)(() => Ninja.move(Maze.WEST)))
+    }
+
+    val up = (i:Int) => {
+      actionQueue.enqueueAll(Seq.fill(i)(() => Ninja.move(Maze.NORTH)))
+    }
+
+    val canGo = (d:Int) => Ninja.canMove(d)
+
+    val look = (d:Int) => {
+      val move = Move(d)
+      goalDistance(Ninja.x + move.dx, Ninja.y + move.dy)
+    }
+
+    Commands.evalWithContext(
+      args = Seq(
+        "ping" -> ping,
+        "right" -> right,
+        "left" -> left,
+        "down" -> down,
+        "up" -> up,
+        "canGo" -> canGo,
+        "canGoRight" -> (() => canGo(Maze.EAST)),
+        "canGoDown" -> (() => canGo(Maze.SOUTH)),
+        "canGoLeft" -> (() => canGo(Maze.WEST)),
+        "canGoUp" -> (() => canGo(Maze.NORTH)),
+        "look" -> look,
+        "lookRight" -> (() => look(Maze.EAST)),
+        "lookDown" -> (() => look(Maze.SOUTH)),
+        "lookLeft" -> (() => look(Maze.WEST)),
+        "lookUp" -> (() => look(Maze.NORTH)),
+        "lookHere" -> (() => look(-1))
+      ),
+      code = code
+    )
   }
 
 

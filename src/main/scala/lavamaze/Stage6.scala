@@ -17,7 +17,7 @@ object Stage6 extends Stage {
 
   val maze:Maze = new Maze("Stage 6",
     defaultAction = () => {
-      js.eval(editor.getText)
+      //js.eval(editor.getText)
       Idle
     },
     onGoal = () => {
@@ -30,13 +30,7 @@ object Stage6 extends Stage {
   maze.showRoutes = true
 
   val run: (Event) => Unit = { x =>
-    Commands.activeMaze = Some(maze)
-
-    maze.Ninja.x = 0
-    maze.Ninja.y = 0
-    maze.Ninja.action = Idle
-    maze.actionQueue.dequeueAll(_ => true)
-    js.eval(editor.getText)
+    maze.runCode(editor.getText)
   }
 
   def reset():Unit = {

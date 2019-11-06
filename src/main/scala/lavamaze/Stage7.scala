@@ -44,14 +44,7 @@ object Stage7 extends Stage {
   maze.createBlobs(2)
 
   val run: (Event) => Unit = { x =>
-    Commands.activeMaze = Some(maze)
-
-    maze.Ninja.alive = true
-    maze.Ninja.x = 0
-    maze.Ninja.y = 0
-    maze.Ninja.action = Idle
-    maze.actionQueue.dequeueAll(_ => true)
-    js.eval(editor.getText)
+    maze.runCode(editor.getText)
   }
 
   def checkPassword(e:dom.Event): Unit = {

@@ -4,6 +4,7 @@ import com.wbillingsley.veautiful.logging.Logger
 import org.scalajs.dom
 
 import scala.collection.mutable
+import scala.scalajs.js
 import scala.scalajs.js.annotation.{JSExport, _}
 
 @JSExportTopLevel("Commands")
@@ -16,51 +17,27 @@ object Commands {
     println("ping")
   }
 
-  @JSExport
-  var activeMaze:Option[Maze] = None
-
-  @JSExport
-  def move(d:Int) = {
-    activeMaze.foreach { m => m.actionQueue.enqueue(() => m.Ninja.move(d))}
-  }
-
-  @JSExport
-  def right(i:Int) = activeMaze.foreach { m => m.actionQueue.enqueueAll(Seq.fill(i)(() => m.Ninja.move(Maze.EAST)))}
-
-  @JSExport
-  def down(i:Int) = activeMaze.foreach { m => m.actionQueue.enqueueAll(Seq.fill(i)(() => m.Ninja.move(Maze.SOUTH)))}
-
-  @JSExport
-  def left(i:Int) = activeMaze.foreach { m => m.actionQueue.enqueueAll(Seq.fill(i)(() => m.Ninja.move(Maze.WEST)))}
-
-  @JSExport
-  def up(i:Int) = activeMaze.foreach { m => m.actionQueue.enqueueAll(Seq.fill(i)(() => m.Ninja.move(Maze.NORTH)))}
-
-  @JSExport
-  def look(d:Int):Int = activeMaze match {
-    case Some(m) => {
-      val move = Move(d)
-      m.goalDistance(m.Ninja.x + move.dx, m.Ninja.y + move.dy)
-    }
-    case _ => 99
-  }
-
-  @JSExport
-  def canGoRight() = activeMaze match {
-    case Some(m) => m.Ninja.canMove(Maze.EAST)
-    case _ => false
-  }
-
-  @JSExport
-  def canGoDown() = activeMaze match {
-    case Some(m) => m.Ninja.canMove(Maze.SOUTH)
-    case _ => false
-  }
-
   /* Used for the draw loop */
   val actions = mutable.Map.empty[String, () => Unit]
   dom.window.setInterval(() => {
     for { action <- actions.values } action.apply()
   }, 1000/60.0)
+
+  /**
+    * Dynamically composes a function, calling it with the given context.
+    *
+    * @param thisVal
+    * @param args
+    * @param code
+    * @return
+    */
+  @JSExport
+  def evalWithContext(thisVal: js.Any = new js.Object(), args:Seq[(String, js.Any)] = Seq.empty, code:String = ""):js.Dynamic = {
+    val argNames = args.map(_._1)
+    val func = new js.Function(argNames :+ code :_*)
+    val argVals = args.map(_._2)
+    func.call(thisVal, argVals:_*)
+  }
+
 
 }

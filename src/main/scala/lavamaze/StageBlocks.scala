@@ -28,26 +28,16 @@ object StageBlocks extends Stage {
   })
   maze.makePath()
 
-  def runSB(): Unit = {
-    maze.actionQueue.clear()
-    Commands.activeMaze = Some(maze)
-
-    maze.Ninja.x = 0
-    maze.Ninja.y = 0
-    maze.Ninja.action = Idle
-    maze.actionQueue.dequeueAll(_ => true)
-
+  def run(): Unit = {
     val programText = pt.toLanguage.toJS(0)
     logger.info("Program text follows:")
     logger.info(programText)
-    val func = js.Function.apply(programText)
-    //js.eval(programText)
-    func.call("")
+    maze.runCode(programText)
   }
 
   @JSExport
   val scatterCanvas = new TileSpace(Some("example"), JSLang)((512, 384))
-  val pt = new ProgramTile(scatterCanvas, <.button(^.cls := "btn btn-sm btn-primary", ^.onClick --> runSB(), "Run"))
+  val pt = new ProgramTile(scatterCanvas, <.button(^.cls := "btn btn-sm btn-primary", ^.onClick --> run(), "Run"))
 
   scatterCanvas.tiles.append(pt)
 

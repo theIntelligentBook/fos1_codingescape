@@ -28,13 +28,7 @@ object Stage2 extends Stage {
   maze.makePath()
 
   val run: (Event) => Unit = { x =>
-    Commands.activeMaze = Some(maze)
-
-    maze.Ninja.x = 0
-    maze.Ninja.y = 0
-    maze.Ninja.action = Idle
-    maze.actionQueue.dequeueAll(_ => true)
-    js.eval(editor.getText)
+    maze.runCode(editor.getText)
   }
 
   def reset():Unit = {

@@ -1,5 +1,5 @@
 module.exports = {
-  "require": (function(x0) {
-    return {}[x0]
+  "require": (function(x3) {
+    return {}[x3]
   })
 }
