@@ -76,6 +76,9 @@ object StageIf extends Stage {
   maze.makePath()
 
   def run():Unit = {
+    maze.clear()
+    maze.makePath()
+
     val programText = pt.toLanguage.toJS(0)
     logger.info("Program text follows:")
     logger.info(programText)
@@ -99,7 +102,7 @@ object StageIf extends Stage {
           <.p(
             """
               | Up until now, we've given the ninja a fixed set of instructions. That only works if we know the maze
-              | in advance.
+              | in advance. But this time, the maze changes every time we click run!
               |""".stripMargin
           ),
           <.p(

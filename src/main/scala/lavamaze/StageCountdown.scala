@@ -104,6 +104,9 @@ object StageCountdown extends Stage {
   }
 
   def run():Unit = {
+    maze.clear()
+    maze.makeSpoilerPath()
+
     try {
       val programText = pt.toLanguage.toJS(0)
       error = None
