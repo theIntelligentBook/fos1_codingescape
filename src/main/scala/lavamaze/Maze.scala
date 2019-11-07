@@ -131,6 +131,13 @@ class Maze(name:String, val w:Int = 8, val h:Int = 6, var defaultAction: () => A
     oc = None
   }
 
+  def clear():Unit = {
+    for {
+      x <- 0 until w
+      y <- 0 until h
+    } cells(y)(x) = Maze.Lava
+  }
+
   def makeSpoilerPath() = {
     makePath(2)
     cells(h-2)(w-1) = Maze.Floor

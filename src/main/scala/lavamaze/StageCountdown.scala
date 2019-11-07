@@ -18,9 +18,9 @@ object StageCountdown extends Stage {
   val editor = new CodeEditor(text = "", rows=8, disabled=false)
 
   var reachedGoal = false
-  val code = "+1000"
+  val code = "68"
   val number = 8
-  val name = "68"
+  val name = "Countdown"
 
   val maze:Maze = new Maze("Stage 4",
     defaultAction = () => {
