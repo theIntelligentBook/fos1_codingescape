@@ -136,6 +136,7 @@ class Maze(name:String, val w:Int = 8, val h:Int = 6, var defaultAction: () => A
       x <- 0 until w
       y <- 0 until h
     } cells(y)(x) = Maze.Lava
+    cells(h - 1)(w - 1) = Maze.Goal
   }
 
   def makeSpoilerPath() = {
