@@ -11,7 +11,6 @@ object StageCardsOfDoom extends Stage {
   import Headers._
 
   var reachedGoal = false
-  val code = "67"
   val number = 4
   val name = "Cards of Doom"
 

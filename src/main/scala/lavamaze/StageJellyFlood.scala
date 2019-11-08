@@ -10,7 +10,6 @@ object StageJellyFlood extends Stage {
   import Headers._
 
   var reachedGoal = false
-  val code = "69"
   val number = 7
   val name = "Jelly Flood!"
 

@@ -15,7 +15,6 @@ object StageTextCode extends Stage {
   val editor = new CodeEditor(text = "", rows=8, disabled=false, placeholder = "Write your code here")
 
   var reachedGoal = false
-  val code = "83"
   val number = 3
   val name = "Don't typo!"
 

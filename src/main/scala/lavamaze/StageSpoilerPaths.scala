@@ -20,7 +20,6 @@ object StageSpoilerPaths extends Stage {
     """.stripMargin, rows=8, disabled=true)
 
   var reachedGoal = false
-  val code = "80"
   val number = 6
   val name = "Downright annoying"
 

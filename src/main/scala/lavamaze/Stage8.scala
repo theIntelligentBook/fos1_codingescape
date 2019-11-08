@@ -8,7 +8,6 @@ object Stage8 extends Stage {
   import Headers._
 
   var reachedGoal = false
-  val code = "ESCAPED!"
   val number = 10
   val name = "Final conundrum"
 
@@ -16,7 +15,7 @@ object Stage8 extends Stage {
     val s = e.target match {
       case x:HTMLInputElement => x.value
     }
-    if (s.toUpperCase().trim() == "I ESCAPED!") {
+    if (s.toUpperCase().trim() == "I ESCAPED") {
       reachedGoal = true
       Routing.rerender()
     }

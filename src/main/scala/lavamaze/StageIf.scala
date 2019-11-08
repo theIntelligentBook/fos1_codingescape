@@ -16,7 +16,6 @@ object StageIf extends Stage {
   val logger:Logger = Logger.getLogger(StageIf.getClass)
 
   var reachedGoal = false
-  val code = "65"
   val number = 5
   val name = "If only..."
 

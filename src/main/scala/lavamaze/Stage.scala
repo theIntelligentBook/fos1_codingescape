@@ -8,7 +8,7 @@ trait Stage extends DiffComponent {
 
   def reachedGoal:Boolean
 
-  def code:String
+  final def code:String = Stage.codes(number)
 
   def number:Int
 
@@ -18,14 +18,22 @@ trait Stage extends DiffComponent {
 
 object Stage {
 
+  val codes = Seq(
+    "33",
+    "73", "32", "69" , "83", "67", "65", "80", "69", "68",
+//    "33",
+    "ESCAPED"
+
+  )
+
   val logger:Logger = Logger.getLogger(Stage.getClass)
 
   val all = Seq(
-    Stage0, Stage1, StageBlocks, StageTextCode, StageCardsOfDoom, StageIf, StageSpoilerPaths, StageJellyFlood, StageCountdown, StageBlobs, Stage8
+    Stage1, StageBlocks, StageTextCode, StageCardsOfDoom, StageIf, StageSpoilerPaths, StageJellyFlood, StageCountdown, StageBlobs, Stage8
   )
 
   val sequence = Seq(
-    TitleCard, Stage0, Stage1, StageBlocks, StageTextCode, StageCardsOfDoom, StageIf, StageSpoilerPaths, StageJellyFlood, StageCountdown, StageBlobs, Stage8
+    TitleCard, Stage1, StageBlocks, StageTextCode, StageCardsOfDoom, StageIf, StageSpoilerPaths, StageJellyFlood, StageCountdown, StageBlobs, Stage8
   )
 
 

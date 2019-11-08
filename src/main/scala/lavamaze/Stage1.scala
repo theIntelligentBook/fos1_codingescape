@@ -23,8 +23,6 @@ object Stage1 extends Stage {
   @JSExport
   var reachedGoal = false
 
-  val code = "32"
-
   override val number = 1
 
   override val name = "Show me the way"

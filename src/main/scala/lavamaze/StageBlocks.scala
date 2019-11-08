@@ -17,8 +17,6 @@ object StageBlocks extends Stage {
 
   var reachedGoal: Boolean = false
 
-  override def code: String = "69"
-
   override def number: Int = 2
 
   override def name: String = "Coding's a drag?"

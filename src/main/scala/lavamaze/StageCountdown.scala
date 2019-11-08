@@ -18,7 +18,6 @@ object StageCountdown extends Stage {
   val editor = new CodeEditor(text = "", rows=8, disabled=false)
 
   var reachedGoal = false
-  val code = "68"
   val number = 8
   val name = "Countdown"
 
