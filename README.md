@@ -1,5 +1,12 @@
-# Course Explorer (old, 2017)
+# The Coding Escape
 
-This is an explorer built that showed CBOK mapping of a computer science degree. As it was built for a one-time use (an accreditation visit), it included a copy of the Veautiful scala.js UI code rather than importing it as a library.
+This is an Hour-of-Code style outreach that I've run for Far Out Science in 2018 and 2019. It's also an example of something built using my Scala.js UI toolkit, [Veautiful](https://www.wbillingsley.com/veautiful)
 
-Of interest in this repo, is that it models the units directly in Scala, so we could see what that looked like. 
+You can play along with it live on [GitHub Pages](https://theintelligentbook.com/fos1_codingescape).
+
+Amongst other things added in 2019:
+
+* An updated version of my little blocks-language, Scatter!
+* Cards of Doom, now playable!
+* V-Slides - the logic that lays out the deck is now separated so I can also use it for Markdown-style slide decks (though here it's game-stages)
+
